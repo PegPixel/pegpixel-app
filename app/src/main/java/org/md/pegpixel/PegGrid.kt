@@ -8,9 +8,10 @@ import android.widget.TableRow
 import org.json.JSONObject
 
 class PegGrid(private val columnCount: Int, private val rowCount: Int, private val allPegs: List<PegView>) {
-    fun createJson() {
-        Log.i("STUFF","Created JSON: ")
-        PegGridToJson.createJsonFor(allPegs)
+    fun createJson(): String {
+        val jsonForGrid = PegGridToJson.createJsonFor(allPegs)
+        Log.i("STUFF","Created JSON: $jsonForGrid")
+        return jsonForGrid
     }
 
 

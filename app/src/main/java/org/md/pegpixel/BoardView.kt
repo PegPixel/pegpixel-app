@@ -14,7 +14,9 @@ class BoardView : AppCompatActivity() {
         //val pegGrid = PegGrid(7, 5)
         val rootTable = findViewById<TableLayout>(R.id.pegTableLayout)
 
-        val pegGrid = PegGrid.addGridTo(columnCount = 7, rowCount = 5, tableLayout = rootTable)
+        PegGrid.addGridTo(columnCount = 7, rowCount = 5, tableLayout = rootTable)
+
+        BluetoothConnectionToBoard.initiate(this)
     }
 }
 
