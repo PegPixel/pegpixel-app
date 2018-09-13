@@ -30,12 +30,30 @@ class BoardView : AppCompatActivity() {
 
         val rootTable = findViewById<TableLayout>(R.id.pegTableLayout)
 
-        PegGrid.addGridTo(
-                columnCount = 7,
-                rowCount = 5,
-                tableLayout = rootTable,
-                sendViaBt = sendViaBt
+        initiateGrid(rootTable)
+    }
+
+    private fun initiateGrid(rootTable: TableLayout) {
+        val columnCount = 7
+        val rowCount = 5
+
+        val allPegsWithButtons = PegGrid.addGridTo(
+                columnCount = columnCount,
+                rowCount = rowCount,
+                tableLayout = rootTable
         )
+
+        val allPegs = allPegsWithButtons.map { it.pegView }
+
+        allPegsWithButtons.forEach {pegViewWithButton ->
+            pegViewWithButton.button.setOnClickListener{
+                pegViewWithButton.pegView.toggleSelect()
+                val json = PegGridToJson.createJsonFor(allPegs)
+                sendViaBt(json)
+            }
+        }
+
+
     }
 
     private fun initiateBluetoothConnection() {

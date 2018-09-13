@@ -1,35 +1,23 @@
 package org.md.pegpixel
 
-import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TableLayout
 import android.widget.TableRow
-import org.json.JSONObject
 
-class PegGrid(private val columnCount: Int, private val rowCount: Int, private val allPegs: List<PegView>) {
-    fun createJson(): String {
-        val jsonForGrid = PegGridToJson.createJsonFor(allPegs)
-        Log.i("STUFF","Created JSON: $jsonForGrid")
-        return jsonForGrid
-    }
-
+class PegGrid {
 
     companion object {
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-        fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout, sendViaBt: (String) -> Unit) {
-            val allPegs = (1..rowCount).reversed().flatMap{
+        fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegViewWithButton> {
+            return (1..rowCount).reversed().flatMap{
                 addRowWithColumns(it, columnCount, tableLayout)
             }
-
-            val pegGrid = PegGrid(columnCount, rowCount, allPegs.map{it.first})
-
-            allPegs.forEach{it.second.setOnClickListener(PegClickListener(it.first, pegGrid, sendViaBt))}
         }
 
-        private fun addRowWithColumns(currentRowIndex: Int, columnCount: Int, tableLayout: TableLayout): List<Pair<PegView, Button>> {
+        private fun addRowWithColumns(currentRowIndex: Int, columnCount: Int, tableLayout: TableLayout): List<PegViewWithButton> {
             val tableRow = TableRow(tableLayout.context)
             tableRow.layoutParams = tableParams
 
@@ -37,7 +25,7 @@ class PegGrid(private val columnCount: Int, private val rowCount: Int, private v
                 val button = createCheckBox(tableLayout, currentRowIndex, it)
                 val pegView = PegView(currentRowIndex, it, false)
                 tableRow.addView(button)
-                Pair(pegView, button)
+                PegViewWithButton(pegView, button)
             }
             tableLayout.addView(tableRow)
 
