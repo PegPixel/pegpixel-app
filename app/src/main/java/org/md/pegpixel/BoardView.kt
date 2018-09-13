@@ -2,6 +2,7 @@ package org.md.pegpixel
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TableLayout
 
 
@@ -16,7 +17,12 @@ class BoardView : AppCompatActivity() {
 
         PegGrid.addGridTo(columnCount = 7, rowCount = 5, tableLayout = rootTable)
 
-        BluetoothConnectionToBoard.initiate(this)
+        val bluetoothConnectionToBoard = BluetoothConnectionToBoard.initiate("DSD TECH HC-05")
+
+        if(bluetoothConnectionToBoard == null) {
+            Log.e("STUFF", "Could not connect to bluetooth device")
+        }
+        bluetoothConnectionToBoard?.sendData("Hello World")
     }
 }
 

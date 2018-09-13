@@ -9,61 +9,44 @@ import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
+import java.nio.file.Files.size
+import java.util.*
 
 
+class BluetoothConnectionToBoard (private val bluetoothDevice: BluetoothDevice) {
 
+    private val theOneAndOnlyUuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
-class BluetoothConnectionToBoard : BroadcastReceiver() {
+    fun sendData(data: String) {
+        val bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(theOneAndOnlyUuid)
+        bluetoothSocket.connect()
 
-    private val discoveredDevices = mutableSetOf<DiscoveredDevice>()
+        val outputStream = bluetoothSocket.outputStream
 
-    override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action
-        if (BluetoothDevice.ACTION_FOUND == action) {
-            // Discovery has found a device. Get the BluetoothDevice
-            // object and its info from the Intent.
-            val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            val deviceName = device.name
-            val deviceHardwareAddress = device.address // MAC address
-            discoveredDevices.add(DiscoveredDevice(deviceName, deviceHardwareAddress))
-            Log.i("STUFF", "Discovered new device: $deviceName")
-        } else {
-            Log.i("STUFF", "Bluetooth action: ${intent.action}")
-        }
+        outputStream.write(data.toByteArray())
+
+        Log.i("STUFF", "Bluetooth socket to device is etablished")
     }
 
     companion object {
-        fun initiate(activity: Activity): BluetoothConnectionToBoard{
+        fun initiate(bluetoothDeviceName: String): BluetoothConnectionToBoard?{
             val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            if(mBluetoothAdapter.isEnabled){
+            val pairedDevices = mBluetoothAdapter.bondedDevices
+            val pairedBluetoothDevices = pairedDevices.map {
+                PairedBluetoothDevice(it.name, it.address)
+            }
 
-                val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-                val broadcastReceiver = BluetoothConnectionToBoard()
+            Log.i("STUFF", "paired devices: $pairedBluetoothDevices")
 
-                activity.registerReceiver(broadcastReceiver, filter)
-                Log.e("STUFF", "Bluetooth listener is active")
-                return broadcastReceiver
-            } else{
-                Log.e("STUFF", "Bluetooth is disabled - app will not function")
-                return BluetoothConnectionToBoard()
+            val macAdress = pairedDevices.find { it.name == bluetoothDeviceName }
+
+            return macAdress?.let {
+                val bluetoothDevice = mBluetoothAdapter.getRemoteDevice(it.address)
+                BluetoothConnectionToBoard(bluetoothDevice)
             }
         }
-
     }
 }
 
-class DiscoveredDevice(name: String, macAddress: String)
+data class PairedBluetoothDevice(val name: String, val macAddress: String)
 
-
-// TODO "bonded devices abfragen"
-/*
-Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-if (pairedDevices.size() > 0) {
-// There are paired devices. Get the name and address of each paired device.
-for (BluetoothDevice device : pairedDevices) {
-String deviceName = device.getName();
-String deviceHardwareAddress = device.getAddress(); // MAC address
-}
-}
- */
