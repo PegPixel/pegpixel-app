@@ -13,14 +13,4 @@
 
     </TableLayout>
 
-    <Button
-            android:text="Init Bluetooth Connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/initConnectionButton" android:layout_weight="1"/>
-
-    <Button
-            android:text="Close Bluetooth Connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/closeConnectionButton" android:layout_weight="1"/>
-
 </LinearLayout>

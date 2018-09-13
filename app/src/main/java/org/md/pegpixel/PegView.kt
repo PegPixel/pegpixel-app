@@ -3,8 +3,8 @@ package org.md.pegpixel
 import android.view.View
 
 class PegView(
-        val xIndex: Int,
-        val yIndex: Int,
+        val x: Int,
+        val y: Int,
         var selected: Boolean) {
 
     fun toggleSelect() {

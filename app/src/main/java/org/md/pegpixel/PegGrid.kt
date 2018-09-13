@@ -19,14 +19,14 @@ class PegGrid(private val columnCount: Int, private val rowCount: Int, private v
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-        fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout) {
+        fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout, sendViaBt: (String) -> Unit) {
             val allPegs = (1..rowCount).reversed().flatMap{
                 addRowWithColumns(it, columnCount, tableLayout)
             }
 
             val pegGrid = PegGrid(columnCount, rowCount, allPegs.map{it.first})
 
-            allPegs.forEach{it.second.setOnClickListener(PegClickListener(it.first, pegGrid))}
+            allPegs.forEach{it.second.setOnClickListener(PegClickListener(it.first, pegGrid, sendViaBt))}
         }
 
         private fun addRowWithColumns(currentRowIndex: Int, columnCount: Int, tableLayout: TableLayout): List<Pair<PegView, Button>> {
