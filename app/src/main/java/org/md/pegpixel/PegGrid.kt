@@ -42,3 +42,6 @@ class PegGrid {
     }
 }
 
+
+
+data class PegViewWithButton(val pegView: PegView, val button: Button)

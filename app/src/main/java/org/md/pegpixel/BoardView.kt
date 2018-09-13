@@ -13,12 +13,6 @@ class BoardView : AppCompatActivity() {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    private val sendViaBt: (String) -> Unit = {data ->
-        thread {
-            bluetoothConnectionToBoard.sendData(data)
-        }
-    }
-
     private val bluetoothDeviceName = "DSD TECH HC-05"
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoard =  PendingBluetoothConnectionToBoard(bluetoothDeviceName, showShortToast)
 
@@ -33,13 +27,16 @@ class BoardView : AppCompatActivity() {
         initiateGrid(rootTable)
     }
 
-    private fun initiateGrid(rootTable: TableLayout) {
-        val columnCount = 7
-        val rowCount = 5
+    private val sendViaBt: (String) -> Unit = {data ->
+        thread {
+            bluetoothConnectionToBoard.sendData(data)
+        }
+    }
 
+    private fun initiateGrid(rootTable: TableLayout) {
         val allPegsWithButtons = PegGrid.addGridTo(
-                columnCount = columnCount,
-                rowCount = rowCount,
+                columnCount = 7,
+                rowCount = 5,
                 tableLayout = rootTable
         )
 
@@ -52,8 +49,6 @@ class BoardView : AppCompatActivity() {
                 sendViaBt(json)
             }
         }
-
-
     }
 
     private fun initiateBluetoothConnection() {
