@@ -4,8 +4,9 @@ import com.google.gson.Gson
 
 class PegGridToJson {
     companion object {
-        fun createJsonFor(allPegs: List<PegView>): String {
-            return Gson().toJson(allPegs.map { PegAsJson.fromViewObject(it)})
+        fun createJsonFor(pegView: PegView): String {
+            val jsonString = Gson().toJson(PegAsJson.fromViewObject(pegView))
+            return "$jsonString\n"
         }
     }
 }
@@ -13,13 +14,13 @@ class PegGridToJson {
 data class PegAsJson(
         val x: Int,
         val y: Int,
-        val selected: Boolean) {
+        val s: String) {
     companion object {
         fun fromViewObject(pegView: PegView): PegAsJson {
             return PegAsJson(
                 x = pegView.xIndex,
                 y = pegView.yIndex,
-                selected = pegView.selected
+                s = if (pegView.selected) "t" else "f"
             )
         }
     }

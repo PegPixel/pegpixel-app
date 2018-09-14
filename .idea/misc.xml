@@ -6,25 +6,4 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-  <component name="SbtLocalSettings">
-    <option name="modificationStamps">
-      <map>
-        <entry key="$PROJECT_DIR$/../../itizzimo/appservernew" value="4468177345097" />
-      </map>
-    </option>
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
-    <option name="projectSyncType">
-      <map>
-        <entry key="$PROJECT_DIR$/../../galeria/common" value="PREVIEW" />
-        <entry key="$PROJECT_DIR$/../../galeria/gkh-data-replication" value="PREVIEW" />
-        <entry key="$PROJECT_DIR$/../../galeria/wishlist" value="PREVIEW" />
-      </map>
-    </option>
-  </component>
-  <component name="ScalaSbtSettings">
-    <option name="maximumHeapSize" value="1024" />
-    <option name="vmParameters" value="-XX:MaxPermSize=512M" />
-  </component>
 </project>

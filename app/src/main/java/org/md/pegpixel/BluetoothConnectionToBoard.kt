@@ -58,6 +58,7 @@ class EstablishedBluetoothConnectionToBoard (private val bluetoothSocket: Blueto
 
     private fun writeToStream(bluetoothSocket: BluetoothSocket, data: String) {
         bluetoothSocket.outputStream.write(data.toByteArray())
+        bluetoothSocket.outputStream.flush()
     }
 
     override fun close() {

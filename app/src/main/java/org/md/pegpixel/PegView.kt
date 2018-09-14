@@ -6,6 +6,6 @@ class PegView(
         var selected: Boolean) {
 
     fun toggleSelect() {
-        selected != selected
+        selected = !selected
     }
 }
