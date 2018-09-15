@@ -7,39 +7,28 @@ import java.io.IOException
 import java.util.*
 
 interface BluetoothConnectionToBoard {
-    fun sendData(data: String)
+    fun sendData(data: String, handleConnectionError: (String) -> Unit)
     fun close()
     companion object {
         private val theOneAndOnlyUuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
         fun initiate(bluetoothDeviceName: String, handleConnectionError: (String) -> Unit): BluetoothConnectionToBoard{
             val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            val pairedDevices = mBluetoothAdapter.bondedDevices
-            val pairedBluetoothDevices = pairedDevices.map { bluetoothDevice ->
-                PairedBluetoothDevice(bluetoothDevice.name, bluetoothDevice.address)
-            }
 
-            Log.i("STUFF", "paired devices: $pairedBluetoothDevices")
-
-            val macAddress = pairedDevices.find { it.name == bluetoothDeviceName }
-
-
-            return if(macAddress != null) {
-                val bluetoothDevice = macAddress.let { bluetoothDevice ->
-                    mBluetoothAdapter.getRemoteDevice(bluetoothDevice.address)
-                }
+            val bluetoothConnectionToBoard = mBluetoothAdapter?.bondedDevices?.find {
+                it.name == bluetoothDeviceName
+            }?.let { bluetoothDevice ->
+                val remoteBluetoothDevice = mBluetoothAdapter.getRemoteDevice(bluetoothDevice.address)
                 try{
-                    val bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(theOneAndOnlyUuid)
+                    val bluetoothSocket = remoteBluetoothDevice.createRfcommSocketToServiceRecord(theOneAndOnlyUuid)
                     bluetoothSocket.connect()
                     return EstablishedBluetoothConnectionToBoard(bluetoothSocket)
                 } catch (e: IOException) {
                     Log.i("STUFF", "create: could not connect to $bluetoothDeviceName - ${e.message}")
                     handleConnectionError("Could not connect to ${bluetoothDevice.name}")
-                    PendingBluetoothConnectionToBoard(bluetoothDeviceName, handleConnectionError)
+                    PendingBluetoothConnectionToBoard(bluetoothDeviceName)
                 }
-            } else {
-                Log.i("STUFF", "could not connect to $bluetoothDeviceName")
-                PendingBluetoothConnectionToBoard(bluetoothDeviceName, handleConnectionError)
             }
+            return bluetoothConnectionToBoard?: PendingBluetoothConnectionToBoard(bluetoothDeviceName)
         }
     }
 }
@@ -52,8 +41,12 @@ class EstablishedBluetoothConnectionToBoard (private val bluetoothSocket: Blueto
         return bluetoothSocket
     }
 
-    override fun sendData(data: String) {
-        writeToStream(theSocket, data)
+    override fun sendData(data: String, handleConnectionError: (String) -> Unit) {
+        try{
+            writeToStream(theSocket, data)
+        } catch (e: IOException) {
+            handleConnectionError("Could not send data")
+        }
     }
 
     private fun writeToStream(bluetoothSocket: BluetoothSocket, data: String) {
@@ -65,9 +58,9 @@ class EstablishedBluetoothConnectionToBoard (private val bluetoothSocket: Blueto
         bluetoothSocket.close()
     }
 }
-class PendingBluetoothConnectionToBoard (private val bluetoothDeviceName: String, private val handleConnectionError: (String) -> Unit) : BluetoothConnectionToBoard {
+class PendingBluetoothConnectionToBoard (private val bluetoothDeviceName: String) : BluetoothConnectionToBoard {
 
-    override fun sendData(data: String) {
+    override fun sendData(data: String, handleConnectionError: (String) -> Unit) {
         handleConnectionError("Bluetooth Device '$bluetoothDeviceName' is not connected")
     }
     override fun close() {

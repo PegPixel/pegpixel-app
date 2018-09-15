@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
@@ -7,16 +8,16 @@
               android:stretchColumns="1" android:id="@+id/root"
               android:layout_weight="1"
               android:orientation="vertical">
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:stretchColumns="1" android:id="@+id/pegTableLayout"
-                 android:layout_weight="1" tools:layout_width="wrap_content">
 
-    </TableLayout>
-    <Button
-            android:text="Send all"
+    <com.flask.colorpicker.ColorPickerView
+            android:id="@+id/colorPicker"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/sendAllButton" android:layout_weight="1"/>
-
+            android:layout_height="wrap_content"
+            app:alphaSlider="true"
+            app:density="12"
+            app:lightnessSlider="true"
+            app:wheelType="FLOWER"
+            app:lightnessSliderView="@+id/v_lightness_slider"
+            app:alphaSliderView="@+id/v_alpha_slider"
+    />
 </LinearLayout>
