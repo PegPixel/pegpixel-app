@@ -55,7 +55,7 @@ data class PegViewWithCheckBox(val pegView: PegView, val checkBox: CheckBox) {
 
     fun updateColor(newColor: Int) {
         pegView.color = newColor
-        val newColor = ColorStateList.valueOf(newColor)
-        CompoundButtonCompat.setButtonTintList(checkBox, newColor)
+        val newColorStateList = ColorStateList.valueOf(newColor)
+        CompoundButtonCompat.setButtonTintList(checkBox, newColorStateList)
     }
 }

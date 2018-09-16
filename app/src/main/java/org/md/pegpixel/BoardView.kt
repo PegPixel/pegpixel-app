@@ -1,5 +1,6 @@
 package org.md.pegpixel
 
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -19,8 +20,6 @@ class BoardView : AppCompatActivity() {
     private val bluetoothDeviceName = "DSD TECH HC-05"
 
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoard =  PendingBluetoothConnectionToBoard(bluetoothDeviceName)
-    private var currentColor: Int = -59596
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +58,8 @@ class BoardView : AppCompatActivity() {
         )
 
         allPegsWithButtons.forEach {pegViewWithCheckbox ->
+            pegViewWithCheckbox.updateColor(Color.RED)
+
             pegViewWithCheckbox.checkBox.setOnClickListener{
                 pegViewWithCheckbox.pegView.toggleSelect()
                 val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
@@ -68,12 +69,11 @@ class BoardView : AppCompatActivity() {
                 val pickColorFragment = PickColorFragment()
                 pickColorFragment.handleSelectedColor = { selectedColor ->
                     allPegsWithButtons
-                            .filter { !it.checkBox.isChecked }
-                            .forEach{
-                                it.updateColor(selectedColor)
-                            }
+                        .filter { !it.checkBox.isChecked }
+                        .forEach{
+                            it.updateColor(selectedColor)
+                        }
                     pegViewWithCheckbox.selectWithColor(selectedColor)
-                    currentColor = selectedColor
                 }
                 pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
                 true
