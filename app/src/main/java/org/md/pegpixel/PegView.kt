@@ -5,6 +5,8 @@ class PegView(
         val yIndex: Int,
         var selected: Boolean) {
 
+    var color: Int? = null
+
     fun toggleSelect() {
         selected = !selected
     }

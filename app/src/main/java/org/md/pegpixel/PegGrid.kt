@@ -43,4 +43,10 @@ class PegGrid {
 
 
 
-data class PegViewWithCheckBox(val pegView: PegView, val checkBox: CheckBox)
+data class PegViewWithCheckBox(val pegView: PegView, val checkBox: CheckBox) {
+    fun selectWithColor(newColor: Int){
+        pegView.selected = true
+        pegView.color = newColor
+        checkBox.isChecked = true
+    }
+}

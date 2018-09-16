@@ -70,18 +70,12 @@ class BoardView : AppCompatActivity() {
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
                 val pickColorFragment = PickColorFragment()
                 pickColorFragment.handleSelectedColor = { selectedColor ->
-                    it.setBackgroundColor(selectedColor)
+                    val newColor = ColorStateList.valueOf(selectedColor)
 
-                    val valueOf = ColorStateList.valueOf(selectedColor)
-                    pegViewWithCheckbox.checkBox.buttonTintList = valueOf
-                    /*
-
-                    int states[][] = {{android.R.attr.state_checked}, {}};
-                    int colors[] = {color_for_state_checked, color_for_state_normal}
-                    CompoundButtonCompat.setButtonTintList(pegViewWithCheckbox.checkBox, ColorStateList(states, colors));
-                     */
+                    CompoundButtonCompat.setButtonTintList(pegViewWithCheckbox.checkBox, newColor);
+                    pegViewWithCheckbox.selectWithColor(selectedColor)
                 }
-                pickColorFragment.show(fragmentManager, "NoticeDialogFragment")
+                pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
                 true
             }
         }
