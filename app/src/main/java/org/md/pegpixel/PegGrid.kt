@@ -1,5 +1,7 @@
 package org.md.pegpixel
 
+import android.content.res.ColorStateList
+import android.support.v4.widget.CompoundButtonCompat
 import android.widget.CheckBox
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -46,7 +48,14 @@ class PegGrid {
 data class PegViewWithCheckBox(val pegView: PegView, val checkBox: CheckBox) {
     fun selectWithColor(newColor: Int){
         pegView.selected = true
+        updateColor(newColor)
+        checkBox.isChecked = pegView.selected
+    }
+
+
+    fun updateColor(newColor: Int) {
         pegView.color = newColor
-        checkBox.isChecked = true
+        val newColor = ColorStateList.valueOf(newColor)
+        CompoundButtonCompat.setButtonTintList(checkBox, newColor)
     }
 }

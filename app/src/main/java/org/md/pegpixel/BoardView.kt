@@ -1,10 +1,8 @@
 package org.md.pegpixel
 
-import android.content.res.ColorStateList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.support.v4.widget.CompoundButtonCompat
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.Toast
@@ -21,7 +19,7 @@ class BoardView : AppCompatActivity() {
     private val bluetoothDeviceName = "DSD TECH HC-05"
 
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoard =  PendingBluetoothConnectionToBoard(bluetoothDeviceName)
-    private var currentColor: Int= 0
+    private var currentColor: Int = -59596
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,17 +61,19 @@ class BoardView : AppCompatActivity() {
         allPegsWithButtons.forEach {pegViewWithCheckbox ->
             pegViewWithCheckbox.checkBox.setOnClickListener{
                 pegViewWithCheckbox.pegView.toggleSelect()
-                //val json = PegGridToJson.createJsonFor(allPegs)
                 val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
                 sendViaBt(json)
             }
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
                 val pickColorFragment = PickColorFragment()
                 pickColorFragment.handleSelectedColor = { selectedColor ->
-                    val newColor = ColorStateList.valueOf(selectedColor)
-
-                    CompoundButtonCompat.setButtonTintList(pegViewWithCheckbox.checkBox, newColor);
+                    allPegsWithButtons
+                            .filter { !it.checkBox.isChecked }
+                            .forEach{
+                                it.updateColor(selectedColor)
+                            }
                     pegViewWithCheckbox.selectWithColor(selectedColor)
+                    currentColor = selectedColor
                 }
                 pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
                 true
@@ -98,6 +98,3 @@ class BoardView : AppCompatActivity() {
         bluetoothConnectionToBoard.close()
     }
 }
-
-
-
