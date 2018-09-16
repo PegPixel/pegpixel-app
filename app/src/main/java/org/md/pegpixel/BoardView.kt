@@ -74,6 +74,8 @@ class BoardView : AppCompatActivity() {
                             it.updateColor(selectedColor)
                         }
                     pegViewWithCheckbox.selectWithColor(selectedColor)
+                    val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
+                    sendViaBt(json)
                 }
                 pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
                 true

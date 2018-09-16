@@ -28,11 +28,14 @@ data class PegAsJson(
                 x = pegView.xIndex,
                 y = pegView.yIndex,
                 s = if (pegView.selected) "t" else "f",
-                r = color?.red()?.toInt(),
-                g = color?.green()?.toInt(),
-                b = color?.blue()?.toInt()
-
+                r = as255Int(color?.red()),
+                g = as255Int(color?.green()),
+                b = as255Int(color?.blue())
             )
+        }
+
+        private fun as255Int(floatColor: Float?): Int?{
+            return floatColor?.times(255)?.toInt()
         }
     }
 }
