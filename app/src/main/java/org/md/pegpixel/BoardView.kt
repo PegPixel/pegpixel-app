@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import android.view.MotionEvent.ACTION_HOVER_ENTER
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.Toast
@@ -52,8 +53,8 @@ class BoardView : AppCompatActivity() {
 
     private fun initiateGrid(rootTable: TableLayout): List<PegView> {
         val allPegsWithButtons = PegGrid.addGridTo(
-                columnCount = 4,
-                rowCount = 4,
+                columnCount = 7,
+                rowCount = 5,
                 tableLayout = rootTable
         )
 
@@ -70,9 +71,7 @@ class BoardView : AppCompatActivity() {
                 pickColorFragment.handleSelectedColor = { selectedColor ->
                     allPegsWithButtons
                         .filter { !it.checkBox.isChecked }
-                        .forEach{
-                            it.updateColor(selectedColor)
-                        }
+                        .forEach{ it.updateColor(selectedColor) }
                     pegViewWithCheckbox.selectWithColor(selectedColor)
                     val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
                     sendViaBt(json)

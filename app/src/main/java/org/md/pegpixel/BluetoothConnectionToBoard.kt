@@ -45,6 +45,7 @@ class EstablishedBluetoothConnectionToBoard (private val bluetoothSocket: Blueto
         try{
             writeToStream(theSocket, data)
         } catch (e: IOException) {
+            Log.e("STUFF", "Could not send data via BT: $data")
             handleConnectionError("Could not send data")
         }
     }

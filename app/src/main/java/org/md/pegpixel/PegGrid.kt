@@ -24,7 +24,7 @@ class PegGrid {
 
             val allPegsInRow = (1..columnCount).map {
                 val checkbox = createCheckbox(tableLayout, currentRowIndex, it)
-                val pegView = PegView(currentRowIndex, it, false)
+                val pegView = PegView(it, currentRowIndex, false)
                 tableRow.addView(checkbox)
                 PegViewWithCheckBox(pegView, checkbox)
             }
@@ -37,7 +37,7 @@ class PegGrid {
             rowParams.column = currentColumnIndex
             val checkbox = CheckBox(tableLayout.context)
             checkbox.layoutParams = rowParams
-            checkbox.text = "$currentRowIndex-$currentColumnIndex"
+            checkbox.text = "$currentColumnIndex-$currentRowIndex"
             return checkbox
         }
     }
