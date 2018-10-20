@@ -10,7 +10,7 @@ import android.widget.Toast
 import kotlin.concurrent.thread
 
 
-class BoardView : AppCompatActivity() {
+class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
     private val showShortToast: (String) -> Unit = { errorMessage ->
         Looper.prepare()
@@ -43,8 +43,10 @@ class BoardView : AppCompatActivity() {
         }
     }
 
+    private var allPegsWithButtons = listOf<PegViewWithCheckBox>();
+
     private fun initiateGrid(rootTable: TableLayout): List<PegView> {
-        val allPegsWithButtons = PegGrid.addGridTo(
+         allPegsWithButtons = PegGrid.addGridTo(
                 columnCount = 7,
                 rowCount = 5,
                 tableLayout = rootTable
@@ -58,25 +60,36 @@ class BoardView : AppCompatActivity() {
                 sendViaBt(pegViewWithCheckbox.pegView)
             }
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
-                showColorPicker(allPegsWithButtons, pegViewWithCheckbox)
+                showColorPicker(pegViewWithCheckbox)
             }
         }
 
         return allPegsWithButtons.map { it.pegView }
     }
 
-    private fun showColorPicker(allPegsWithButtons: List<PegViewWithCheckBox>, pegViewWithCheckbox: PegViewWithCheckBox): Boolean {
+    private fun showColorPicker(pegViewWithCheckbox: PegViewWithCheckBox): Boolean {
         val pickColorFragment = PickColorFragment()
-        pickColorFragment.handleSelectedColor = { selectedColor ->
-            allPegsWithButtons
-                    .filter { !it.checkBox.isChecked }
-                    .forEach { it.updateColor(selectedColor) }
-            pegViewWithCheckbox.selectWithColor(selectedColor)
-            sendViaBt(pegViewWithCheckbox.pegView)
-        }
+        val bundle = Bundle()
+        bundle.putInt("pegViewId", pegViewWithCheckbox.checkBox.id)
+        pickColorFragment.arguments = bundle
         pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
         return true
     }
+
+    override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
+        allPegsWithButtons
+                .filter { !it.checkBox.isChecked }
+                .forEach { it.updateColor(selectedColor) }
+
+        allPegsWithButtons.find {
+            it.checkBox.id == pegViewId
+        }?.let {
+            it.selectWithColor(selectedColor)
+            sendViaBt(it.pegView)
+        }
+
+    }
+
 
     private fun sendViaBt(pegView: PegView) {
         val json = PegGridToJson.createJsonFor(pegView)

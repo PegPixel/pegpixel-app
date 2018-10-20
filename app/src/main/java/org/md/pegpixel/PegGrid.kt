@@ -38,6 +38,7 @@ class PegGrid {
             val checkbox = CheckBox(tableLayout.context)
             checkbox.layoutParams = rowParams
             checkbox.text = "$currentColumnIndex-$currentRowIndex"
+            checkbox.id = (currentColumnIndex * 10 ) + currentRowIndex
             return checkbox
         }
     }
