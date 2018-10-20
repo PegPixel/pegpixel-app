@@ -36,18 +36,11 @@ class BoardView : AppCompatActivity() {
         sendAllButton.setOnClickListener{
             thread{
                 allPegs.forEach{pegView ->
-                    val json = PegGridToJson.createJsonFor(pegView)
-                    sendViaBt(json)
+                    sendViaBt(pegView)
                     // receiving side cannot handle the speed of the transmission -> throttle
                     Thread.sleep(50)
                 }
             }
-        }
-    }
-
-    private val sendViaBt: (String) -> Unit = {data ->
-        thread {
-            bluetoothConnectionToBoard.sendData(data, showShortToast)
         }
     }
 
@@ -63,8 +56,7 @@ class BoardView : AppCompatActivity() {
 
             pegViewWithCheckbox.checkBox.setOnClickListener{
                 pegViewWithCheckbox.pegView.toggleSelect()
-                val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
-                sendViaBt(json)
+                sendViaBt(pegViewWithCheckbox.pegView)
             }
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
                 val pickColorFragment = PickColorFragment()
@@ -73,8 +65,7 @@ class BoardView : AppCompatActivity() {
                         .filter { !it.checkBox.isChecked }
                         .forEach{ it.updateColor(selectedColor) }
                     pegViewWithCheckbox.selectWithColor(selectedColor)
-                    val json = PegGridToJson.createJsonFor(pegViewWithCheckbox.pegView)
-                    sendViaBt(json)
+                    sendViaBt(pegViewWithCheckbox.pegView)
                 }
                 pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
                 true
@@ -82,6 +73,17 @@ class BoardView : AppCompatActivity() {
         }
 
         return allPegsWithButtons.map { it.pegView }
+    }
+
+    private fun sendViaBt(pegView: PegView) {
+        val json = PegGridToJson.createJsonFor(pegView)
+        sendViaBt("$json\n")
+    }
+
+    private val sendViaBt: (String) -> Unit = {data ->
+        thread {
+            bluetoothConnectionToBoard.sendData(data, showShortToast)
+        }
     }
 
     private fun initiateBluetoothConnection() {

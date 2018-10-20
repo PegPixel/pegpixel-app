@@ -7,7 +7,7 @@ class PegGridToJson {
     companion object {
         fun createJsonFor(pegView: PegView): String {
             val jsonString = Gson().toJson(PegAsJson.fromViewObject(pegView))
-            return "$jsonString\n"
+            return jsonString
         }
     }
 }
