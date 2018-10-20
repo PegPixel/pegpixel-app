@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.view.MotionEvent.ACTION_HOVER_ENTER
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.Toast
@@ -59,30 +58,30 @@ class BoardView : AppCompatActivity() {
                 sendViaBt(pegViewWithCheckbox.pegView)
             }
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
-                val pickColorFragment = PickColorFragment()
-                pickColorFragment.handleSelectedColor = { selectedColor ->
-                    allPegsWithButtons
-                        .filter { !it.checkBox.isChecked }
-                        .forEach{ it.updateColor(selectedColor) }
-                    pegViewWithCheckbox.selectWithColor(selectedColor)
-                    sendViaBt(pegViewWithCheckbox.pegView)
-                }
-                pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
-                true
+                showColorPicker(allPegsWithButtons, pegViewWithCheckbox)
             }
         }
 
         return allPegsWithButtons.map { it.pegView }
     }
 
-    private fun sendViaBt(pegView: PegView) {
-        val json = PegGridToJson.createJsonFor(pegView)
-        sendViaBt("$json\n")
+    private fun showColorPicker(allPegsWithButtons: List<PegViewWithCheckBox>, pegViewWithCheckbox: PegViewWithCheckBox): Boolean {
+        val pickColorFragment = PickColorFragment()
+        pickColorFragment.handleSelectedColor = { selectedColor ->
+            allPegsWithButtons
+                    .filter { !it.checkBox.isChecked }
+                    .forEach { it.updateColor(selectedColor) }
+            pegViewWithCheckbox.selectWithColor(selectedColor)
+            sendViaBt(pegViewWithCheckbox.pegView)
+        }
+        pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
+        return true
     }
 
-    private val sendViaBt: (String) -> Unit = {data ->
+    private fun sendViaBt(pegView: PegView) {
+        val json = PegGridToJson.createJsonFor(pegView)
         thread {
-            bluetoothConnectionToBoard.sendData(data, showShortToast)
+            bluetoothConnectionToBoard.sendData("$json\n", showShortToast)
         }
     }
 
