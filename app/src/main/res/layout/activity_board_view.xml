@@ -25,13 +25,14 @@
     </TableLayout>
 
     <CheckBox
-        android:text="@string/status_not_connected"
+        android:id="@+id/connectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/connectionStatus"
-        android:textColor="@android:color/darker_gray"
-        android:buttonTint="@android:color/darker_gray"
         android:layout_marginBottom="8dp"
+        android:buttonTint="@android:color/darker_gray"
+        android:enabled="false"
+        android:text="@string/status_not_connected"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/sendAllButton" />
 
     <Button
