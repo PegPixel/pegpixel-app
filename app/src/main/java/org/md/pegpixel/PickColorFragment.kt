@@ -3,7 +3,6 @@ package org.md.pegpixel
 import android.app.Dialog
 import android.app.DialogFragment
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ class PickColorFragment : DialogFragment() {
         colorPicker.addOnColorSelectedListener{selectedColor ->
             val pegViewId = arguments.getInt("pegViewId")
             val listener  =  activity as SelectedColorListener
-            listener.handleSelectedColor(pegViewId!!, selectedColor)
+            listener.handleSelectedColor(pegViewId, selectedColor)
             handleSelectedColor(selectedColor)
             this.dismiss()
         }

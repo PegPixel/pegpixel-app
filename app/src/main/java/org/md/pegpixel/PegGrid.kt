@@ -1,7 +1,9 @@
 package org.md.pegpixel
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.support.v4.widget.CompoundButtonCompat
+import android.util.Log
 import android.widget.CheckBox
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -13,18 +15,30 @@ class PegGrid {
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
         fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegViewWithCheckBox> {
-            return (1..rowCount).reversed().flatMap{
-                addRowWithColumns(it, columnCount, tableLayout)
+            return createPegViews(columnCount, rowCount)
+                    .flatMap{addToTable(it, tableLayout)}
+
+
+        }
+
+        private fun createPegViews(columnCount: Int, rowCount: Int): List<List<PegView>> {
+            return(rowCount downTo 1).map{currentRow ->
+                    (1 .. columnCount).map{currentColumn ->
+                    Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
+                    PegView(currentColumn, currentRow, false)
+                }
             }
         }
 
-        private fun addRowWithColumns(currentRowIndex: Int, columnCount: Int, tableLayout: TableLayout): List<PegViewWithCheckBox> {
-            val tableRow = TableRow(tableLayout.context)
+        private fun addToTable(pegViews:List<PegView>, tableLayout: TableLayout): List<PegViewWithCheckBox>{
+            val context = tableLayout.context
+            val tableRow = TableRow(context)
             tableRow.layoutParams = tableParams
 
-            val allPegsInRow = (1..columnCount).map {
-                val checkbox = createCheckbox(tableLayout, currentRowIndex, it)
-                val pegView = PegView(it, currentRowIndex, false)
+            val allPegsInRow = pegViews.map {pegView ->
+                rowParams.column = pegView.columnIndex
+                val checkbox = createCheckBox(context, pegView)
+
                 tableRow.addView(checkbox)
                 PegViewWithCheckBox(pegView, checkbox)
             }
@@ -33,12 +47,12 @@ class PegGrid {
             return allPegsInRow
         }
 
-        private fun createCheckbox(tableLayout: TableLayout, currentRowIndex: Int, currentColumnIndex: Int): CheckBox {
-            rowParams.column = currentColumnIndex
-            val checkbox = CheckBox(tableLayout.context)
+        private fun createCheckBox(context: Context?, pegView: PegView): CheckBox {
+            val checkbox = CheckBox(context)
             checkbox.layoutParams = rowParams
-            checkbox.text = "$currentColumnIndex-$currentRowIndex"
-            checkbox.id = (currentColumnIndex * 10 ) + currentRowIndex
+            // add for better debugging
+            //checkbox.text = "${pegView.columnIndex}-${pegView.rowIndex}"
+            checkbox.id = (pegView.columnIndex * 10) + pegView.rowIndex
             return checkbox
         }
     }
