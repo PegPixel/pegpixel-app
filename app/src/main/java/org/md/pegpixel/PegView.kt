@@ -1,8 +1,8 @@
 package org.md.pegpixel
 
 class PegView(
-        val xIndex: Int,
-        val yIndex: Int,
+        val columnIndex: Int,
+        val rowIndex: Int,
         var selected: Boolean) {
 
     var color: Int? = null

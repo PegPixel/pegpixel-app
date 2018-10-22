@@ -8,8 +8,8 @@ class PegGridToCsv{
         fun createCsvFor(pegView: PegView): String {
             val csvBuilder = StringJoiner(",", "", "\n")
 
-            csvBuilder.add(pegView.xIndex.toString())
-            csvBuilder.add(pegView.yIndex.toString())
+            csvBuilder.add(pegView.columnIndex.toString())
+            csvBuilder.add(pegView.rowIndex.toString())
             csvBuilder.add(pegView.selected.toString())
             pegView.color?.let {
                 val color = Color.valueOf(it)

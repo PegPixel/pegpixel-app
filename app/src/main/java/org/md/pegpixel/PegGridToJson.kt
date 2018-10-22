@@ -25,8 +25,8 @@ data class PegAsJson(
                 Color.valueOf(it)
             }
             return PegAsJson(
-                x = pegView.xIndex,
-                y = pegView.yIndex,
+                x = pegView.columnIndex,
+                y = pegView.rowIndex,
                 s = if (pegView.selected) "t" else "f",
                 r = as255Int(color?.red()),
                 g = as255Int(color?.green()),

@@ -1,7 +1,6 @@
 package org.md.pegpixel
 
 import android.graphics.Color
-import java.util.*
 
 class PegGridToSimpleFormat{
     companion object {
@@ -11,8 +10,8 @@ class PegGridToSimpleFormat{
             val selected = if(pegView.selected) "t" else "f"
 
 
-            csvBuilder.append(pegView.xIndex.toString())
-            csvBuilder.append(pegView.yIndex.toString())
+            csvBuilder.append(pegView.columnIndex.toString())
+            csvBuilder.append(pegView.rowIndex.toString())
             csvBuilder.append(selected)
 
             val color = Color.valueOf(pegView.color ?: 0)
