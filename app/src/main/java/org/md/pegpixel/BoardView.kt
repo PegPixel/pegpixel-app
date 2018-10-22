@@ -1,115 +1,40 @@
 package org.md.pegpixel
 
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Looper
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.Toast
-import kotlin.concurrent.thread
+import android.widget.CheckBox
+import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
 
 
-class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
-
-    private val showShortToast: (String) -> Unit = { errorMessage ->
-        Looper.prepare()
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-    }
+class BoardView : AppCompatActivity(){
 
     private val bluetoothDeviceName = "DSD TECH HC-05"
 
-    private var bluetoothConnectionToBoard: BluetoothConnectionToBoard =  PendingBluetoothConnectionToBoard(bluetoothDeviceName)
+    private var board: Board? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_view)
 
-        initiateBluetoothConnection()
+        val bluetoothConnectionStatus = BluetoothConnectionStatus(findViewById(R.id.connectionStatus), applicationContext)
 
-        val allPegs = initiateGrid(findViewById(R.id.pegTableLayout))
-        initiateSendAllButton(findViewById(R.id.sendAllButton), allPegs)
-    }
 
-    private fun initiateSendAllButton(sendAllButton: Button, allPegs: List<Peg>) {
-        sendAllButton.setOnClickListener{
-            thread{
-                allPegs.forEach{pegView ->
-                    sendViaBt(pegView)
-                    // receiving side cannot handle the speed of the transmission -> throttle
-                    Thread.sleep(50)
-                }
-            }
-        }
-    }
+        val board = Board.create(
+                    findViewById(R.id.pegTableLayout),
+                    bluetoothDeviceName,
+                    bluetoothConnectionStatus
+                )
+        board.setupPegEvents(fragmentManager)
+        board.initiateSendAllButton(findViewById(R.id.sendAllButton))
+        board.initiateBluetoothConnection()
 
-    private var allPegsWithButtons = listOf<PegView>();
-
-    private fun initiateGrid(rootTable: TableLayout): List<Peg> {
-         allPegsWithButtons = PegGrid.initialize(
-                columnCount = 7,
-                rowCount = 5,
-                tableLayout = rootTable
-        )
-
-        allPegsWithButtons.forEach {pegViewWithCheckbox ->
-            pegViewWithCheckbox.updateColor(Color.RED)
-
-            pegViewWithCheckbox.button.setOnClickListener{
-                pegViewWithCheckbox.peg.toggleSelect()
-                sendViaBt(pegViewWithCheckbox.peg)
-            }
-            pegViewWithCheckbox.button.setOnLongClickListener{
-                showColorPicker(pegViewWithCheckbox)
-            }
-        }
-
-        return allPegsWithButtons.map { it.peg }
-    }
-
-    private fun showColorPicker(pegWithCheckbox: PegView): Boolean {
-        val pickColorFragment = PickColorFragment()
-        val bundle = Bundle()
-        bundle.putInt("pegViewId", pegWithCheckbox.button.id)
-        pickColorFragment.arguments = bundle
-        pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
-        return true
-    }
-
-    override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
-        allPegsWithButtons
-                .filter { !it.button.isChecked }
-                .forEach { it.updateColor(selectedColor) }
-
-        allPegsWithButtons.find {
-            it.button.id == pegViewId
-        }?.let {
-            it.selectWithColor(selectedColor)
-            sendViaBt(it.peg)
-        }
-
+        this.board = board
     }
 
 
-    private fun sendViaBt(peg: Peg) {
-        val json = PegGridToJson.createJsonFor(peg)
-        thread {
-            bluetoothConnectionToBoard.sendData("$json\n", showShortToast)
-        }
-    }
-
-    private fun initiateBluetoothConnection() {
-        thread {
-            bluetoothConnectionToBoard = BluetoothConnectionToBoard.initiate(bluetoothDeviceName) { errorMessage ->
-
-                Looper.prepare()
-                showShortToast(errorMessage)
-            }
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-        bluetoothConnectionToBoard.close()
+        board?.closeBtConnection()
     }
 }
