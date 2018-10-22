@@ -37,8 +37,6 @@ class BluetoothConnectionToBoardManager(bluetoothDeviceName: String, private val
                 bluetoothConnectionToBoard = PendingBluetoothConnectionToBoard(bluetoothDeviceName)
                 bluetoothConnectionStatus.setDisconnected()
             }
-
-            //bluetoothConnectionToBoard = newBluetoothConnectionToBoard?: PendingBluetoothConnectionToBoard(bluetoothDeviceName)
         }
     }
 

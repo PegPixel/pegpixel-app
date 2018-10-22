@@ -2,7 +2,6 @@ package org.md.pegpixel
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.CheckBox
 import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
 
 
@@ -10,7 +9,7 @@ class BoardView : AppCompatActivity(){
 
     private val bluetoothDeviceName = "DSD TECH HC-05"
 
-    private var board: Board? = null;
+    private var board: Board? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +23,13 @@ class BoardView : AppCompatActivity(){
                     bluetoothDeviceName,
                     bluetoothConnectionStatus
                 )
-        board.setupPegEvents(fragmentManager)
+
+        board.setupEventListeners(fragmentManager)
         board.initiateSendAllButton(findViewById(R.id.sendAllButton))
         board.initiateBluetoothConnection()
 
         this.board = board
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

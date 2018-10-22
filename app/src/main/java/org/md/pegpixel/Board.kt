@@ -27,7 +27,6 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
 
             return Board(allPegsWithButtons, bluetoothDeviceName, bluetoothConnectionStatus)
         }
-
     }
 
     fun initiateSendAllButton(sendAllButton: Button) {
@@ -43,8 +42,7 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
     }
 
 
-    fun setupPegEvents(fragmentManager: FragmentManager): List<Peg> {
-
+    fun setupEventListeners(fragmentManager: FragmentManager): List<Peg> {
         allPegsWithButtons.forEach { pegViewWithCheckbox ->
             pegViewWithCheckbox.updateColor(Color.RED)
 
@@ -56,7 +54,6 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
                 showColorPicker(pegViewWithCheckbox, fragmentManager)
             }
         }
-
         return allPegsWithButtons.map { it.peg }
     }
 
@@ -92,7 +89,6 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
             it.selectWithColor(selectedColor)
             sendViaBt(it.peg)
         }
-
     }
 
     fun closeBtConnection() {
