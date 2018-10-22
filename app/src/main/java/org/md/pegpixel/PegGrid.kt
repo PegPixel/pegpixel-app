@@ -1,6 +1,7 @@
 package org.md.pegpixel
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.widget.*
@@ -9,7 +10,7 @@ class PegGrid {
 
     companion object {
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
-        private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
+        private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
 
         fun initialize(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegView> {
             return createPegViews(columnCount, rowCount)
@@ -19,8 +20,8 @@ class PegGrid {
         }
 
         private fun createPegViews(columnCount: Int, rowCount: Int): List<List<Peg>> {
-            return(rowCount downTo 0).map{currentRow ->
-                    (0 .. columnCount).map{currentColumn ->
+            return(rowCount - 1 downTo 0).map{currentRow ->
+                    (0 until columnCount).map{ currentColumn ->
                     Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
                     Peg(currentColumn, currentRow, false)
                 }
@@ -31,6 +32,7 @@ class PegGrid {
             val context = tableLayout.context
             val tableRow = TableRow(context)
             tableRow.layoutParams = tableParams
+            tableRow.gravity = Gravity.CENTER
 
             val allPegsInRow = pegs.map { pegView ->
                 rowParams.column = pegView.columnIndex
@@ -47,6 +49,9 @@ class PegGrid {
         private fun createCheckBox(context: Context?, peg: Peg): CompoundButton {
             val checkbox = RadioButton(context)
             checkbox.layoutParams = rowParams
+            val padding = 32
+            checkbox.setPadding(padding, padding, padding, padding)
+            checkbox.gravity = Gravity.CENTER
             // add for better debugging
             //checkbox.text = "${peg.columnIndex}-${peg.rowIndex}"
             checkbox.id = (peg.columnIndex * 10) + peg.rowIndex
