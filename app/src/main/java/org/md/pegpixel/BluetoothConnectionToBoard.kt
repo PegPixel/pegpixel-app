@@ -68,7 +68,3 @@ class PendingBluetoothConnectionToBoard (private val bluetoothDeviceName: String
         // no Connection, so nothing to close
     }
 }
-
-
-data class PairedBluetoothDevice(val name: String, val macAddress: String)
-

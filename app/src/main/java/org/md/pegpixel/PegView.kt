@@ -2,19 +2,19 @@ package org.md.pegpixel
 
 import android.content.res.ColorStateList
 import android.support.v4.widget.CompoundButtonCompat
-import android.widget.CheckBox
+import android.widget.CompoundButton
 
-data class PegWithCheckBox(val peg: Peg, val checkBox: CheckBox) {
+data class PegView(val peg: Peg, val button: CompoundButton) {
     fun selectWithColor(newColor: Int){
         peg.selected = true
         updateColor(newColor)
-        checkBox.isChecked = peg.selected
+        button.isChecked = peg.selected
     }
 
 
     fun updateColor(newColor: Int) {
         peg.color = newColor
         val newColorStateList = ColorStateList.valueOf(newColor)
-        CompoundButtonCompat.setButtonTintList(checkBox, newColorStateList)
+        CompoundButtonCompat.setButtonTintList(button, newColorStateList)
     }
 }

@@ -43,7 +43,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         }
     }
 
-    private var allPegsWithButtons = listOf<PegWithCheckBox>();
+    private var allPegsWithButtons = listOf<PegView>();
 
     private fun initiateGrid(rootTable: TableLayout): List<Peg> {
          allPegsWithButtons = PegGrid.initialize(
@@ -55,11 +55,11 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         allPegsWithButtons.forEach {pegViewWithCheckbox ->
             pegViewWithCheckbox.updateColor(Color.RED)
 
-            pegViewWithCheckbox.checkBox.setOnClickListener{
+            pegViewWithCheckbox.button.setOnClickListener{
                 pegViewWithCheckbox.peg.toggleSelect()
                 sendViaBt(pegViewWithCheckbox.peg)
             }
-            pegViewWithCheckbox.checkBox.setOnLongClickListener{
+            pegViewWithCheckbox.button.setOnLongClickListener{
                 showColorPicker(pegViewWithCheckbox)
             }
         }
@@ -67,10 +67,10 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         return allPegsWithButtons.map { it.peg }
     }
 
-    private fun showColorPicker(pegWithCheckbox: PegWithCheckBox): Boolean {
+    private fun showColorPicker(pegWithCheckbox: PegView): Boolean {
         val pickColorFragment = PickColorFragment()
         val bundle = Bundle()
-        bundle.putInt("pegViewId", pegWithCheckbox.checkBox.id)
+        bundle.putInt("pegViewId", pegWithCheckbox.button.id)
         pickColorFragment.arguments = bundle
         pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
         return true
@@ -78,11 +78,11 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
     override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
         allPegsWithButtons
-                .filter { !it.checkBox.isChecked }
+                .filter { !it.button.isChecked }
                 .forEach { it.updateColor(selectedColor) }
 
         allPegsWithButtons.find {
-            it.checkBox.id == pegViewId
+            it.button.id == pegViewId
         }?.let {
             it.selectWithColor(selectedColor)
             sendViaBt(it.peg)

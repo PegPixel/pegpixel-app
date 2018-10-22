@@ -2,9 +2,8 @@ package org.md.pegpixel
 
 import android.content.Context
 import android.util.Log
-import android.widget.CheckBox
-import android.widget.TableLayout
-import android.widget.TableRow
+import android.view.Gravity
+import android.widget.*
 
 class PegGrid {
 
@@ -12,7 +11,7 @@ class PegGrid {
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-        fun initialize(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegWithCheckBox> {
+        fun initialize(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegView> {
             return createPegViews(columnCount, rowCount)
                     .flatMap{addToTable(it, tableLayout)}
 
@@ -28,7 +27,7 @@ class PegGrid {
             }
         }
 
-        private fun addToTable(pegs:List<Peg>, tableLayout: TableLayout): List<PegWithCheckBox>{
+        private fun addToTable(pegs:List<Peg>, tableLayout: TableLayout): List<PegView>{
             val context = tableLayout.context
             val tableRow = TableRow(context)
             tableRow.layoutParams = tableParams
@@ -38,15 +37,15 @@ class PegGrid {
                 val checkbox = createCheckBox(context, pegView)
 
                 tableRow.addView(checkbox)
-                PegWithCheckBox(pegView, checkbox)
+                PegView(pegView, checkbox)
             }
             tableLayout.addView(tableRow)
 
             return allPegsInRow
         }
 
-        private fun createCheckBox(context: Context?, peg: Peg): CheckBox {
-            val checkbox = CheckBox(context)
+        private fun createCheckBox(context: Context?, peg: Peg): CompoundButton {
+            val checkbox = RadioButton(context)
             checkbox.layoutParams = rowParams
             // add for better debugging
             //checkbox.text = "${peg.columnIndex}-${peg.rowIndex}"
