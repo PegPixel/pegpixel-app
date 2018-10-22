@@ -31,14 +31,14 @@ class BluetoothConnectionToBoardManager(bluetoothDeviceName: String, private val
 
         }.thenAccept{ newBluetoothConnectionToBoard ->
             if(newBluetoothConnectionToBoard != null){
-                bluetoothConnectionToBoard == newBluetoothConnectionToBoard
+                bluetoothConnectionToBoard = newBluetoothConnectionToBoard
                 bluetoothConnectionStatus.setConnected()
             } else {
                 bluetoothConnectionToBoard = PendingBluetoothConnectionToBoard(bluetoothDeviceName)
                 bluetoothConnectionStatus.setDisconnected()
             }
 
-            bluetoothConnectionToBoard = newBluetoothConnectionToBoard?: PendingBluetoothConnectionToBoard(bluetoothDeviceName)
+            //bluetoothConnectionToBoard = newBluetoothConnectionToBoard?: PendingBluetoothConnectionToBoard(bluetoothDeviceName)
         }
     }
 
@@ -47,7 +47,6 @@ class BluetoothConnectionToBoardManager(bluetoothDeviceName: String, private val
     }
 
     fun sendData(s: String) {
-        Log.i("STUFF", "Sending via bt: $s")
         bluetoothConnectionToBoard.sendData(s) { _ -> }
     }
 
