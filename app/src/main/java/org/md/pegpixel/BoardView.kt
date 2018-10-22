@@ -31,7 +31,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         initiateSendAllButton(findViewById(R.id.sendAllButton), allPegs)
     }
 
-    private fun initiateSendAllButton(sendAllButton: Button, allPegs: List<PegView>) {
+    private fun initiateSendAllButton(sendAllButton: Button, allPegs: List<Peg>) {
         sendAllButton.setOnClickListener{
             thread{
                 allPegs.forEach{pegView ->
@@ -43,9 +43,9 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         }
     }
 
-    private var allPegsWithButtons = listOf<PegViewWithCheckBox>();
+    private var allPegsWithButtons = listOf<PegWithCheckBox>();
 
-    private fun initiateGrid(rootTable: TableLayout): List<PegView> {
+    private fun initiateGrid(rootTable: TableLayout): List<Peg> {
          allPegsWithButtons = PegGrid.addGridTo(
                 columnCount = 7,
                 rowCount = 5,
@@ -56,21 +56,21 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
             pegViewWithCheckbox.updateColor(Color.RED)
 
             pegViewWithCheckbox.checkBox.setOnClickListener{
-                pegViewWithCheckbox.pegView.toggleSelect()
-                sendViaBt(pegViewWithCheckbox.pegView)
+                pegViewWithCheckbox.peg.toggleSelect()
+                sendViaBt(pegViewWithCheckbox.peg)
             }
             pegViewWithCheckbox.checkBox.setOnLongClickListener{
                 showColorPicker(pegViewWithCheckbox)
             }
         }
 
-        return allPegsWithButtons.map { it.pegView }
+        return allPegsWithButtons.map { it.peg }
     }
 
-    private fun showColorPicker(pegViewWithCheckbox: PegViewWithCheckBox): Boolean {
+    private fun showColorPicker(pegWithCheckbox: PegWithCheckBox): Boolean {
         val pickColorFragment = PickColorFragment()
         val bundle = Bundle()
-        bundle.putInt("pegViewId", pegViewWithCheckbox.checkBox.id)
+        bundle.putInt("pegViewId", pegWithCheckbox.checkBox.id)
         pickColorFragment.arguments = bundle
         pickColorFragment.show(fragmentManager, "PickColorDialogFragment")
         return true
@@ -85,14 +85,14 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
             it.checkBox.id == pegViewId
         }?.let {
             it.selectWithColor(selectedColor)
-            sendViaBt(it.pegView)
+            sendViaBt(it.peg)
         }
 
     }
 
 
-    private fun sendViaBt(pegView: PegView) {
-        val json = PegGridToJson.createJsonFor(pegView)
+    private fun sendViaBt(peg: Peg) {
+        val json = PegGridToJson.createJsonFor(peg)
         thread {
             bluetoothConnectionToBoard.sendData("$json\n", showShortToast)
         }

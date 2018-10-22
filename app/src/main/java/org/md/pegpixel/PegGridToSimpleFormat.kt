@@ -4,17 +4,17 @@ import android.graphics.Color
 
 class PegGridToSimpleFormat{
     companion object {
-        fun createSimpleFormatFor(pegView: PegView): String {
+        fun createSimpleFormatFor(peg: Peg): String {
             val csvBuilder = StringBuilder()
 
-            val selected = if(pegView.selected) "t" else "f"
+            val selected = if(peg.selected) "t" else "f"
 
 
-            csvBuilder.append(pegView.columnIndex.toString())
-            csvBuilder.append(pegView.rowIndex.toString())
+            csvBuilder.append(peg.columnIndex.toString())
+            csvBuilder.append(peg.rowIndex.toString())
             csvBuilder.append(selected)
 
-            val color = Color.valueOf(pegView.color ?: 0)
+            val color = Color.valueOf(peg.color ?: 0)
             csvBuilder.append(as255String(color.red()))
             csvBuilder.append(as255String(color.green()))
             csvBuilder.append(as255String(color.blue()))

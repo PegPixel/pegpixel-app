@@ -1,6 +1,6 @@
 package org.md.pegpixel
 
-class PegView(
+class Peg(
         val columnIndex: Int,
         val rowIndex: Int,
         var selected: Boolean) {

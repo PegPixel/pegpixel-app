@@ -8,7 +8,7 @@ class PegGridToJsonTest {
 
     @Test
     fun creates_json_for_not_selected_peg() {
-        val peg = PegView(1, 1, true)
+        val peg = Peg(1, 1, true)
         val createdJson = PegGridToJson.createJsonFor(peg)
 
         assertThat(createdJson, `is`("""{"x":1,"y":1,"s":"f"}"""))
@@ -17,7 +17,7 @@ class PegGridToJsonTest {
     @Test
     fun creates_json_for_selected_peg(){
 
-        val peg = PegView(1, 1, true)
+        val peg = Peg(1, 1, true)
         val red = -0x10000
         peg.color = red
         val createdJson = PegGridToJson.createJsonFor(peg)

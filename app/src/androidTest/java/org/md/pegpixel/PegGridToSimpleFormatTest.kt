@@ -2,14 +2,10 @@ package org.md.pegpixel
 
 
 import android.graphics.Color
-import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-
 
 
 import org.hamcrest.MatcherAssert.assertThat
@@ -22,7 +18,7 @@ class PegGridToSimpleFormatTest {
 
     @Test
     fun extracts_selected_color() {
-        val peg = PegView(1, 1, true)
+        val peg = Peg(1, 1, true)
         val green = Color.valueOf(0f, 1f, 0f)
         peg.color = green.toArgb()
         val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)
@@ -31,7 +27,7 @@ class PegGridToSimpleFormatTest {
 
     @Test
     fun extracts_when_no_color_selected() {
-        val peg = PegView(1, 1, true)
+        val peg = Peg(1, 1, true)
         val green = Color.valueOf(0f, 0f, 0f)
         peg.color = green.toArgb()
         val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)

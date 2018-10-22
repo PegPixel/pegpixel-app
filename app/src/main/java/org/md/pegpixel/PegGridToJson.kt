@@ -5,8 +5,8 @@ import com.google.gson.Gson
 
 class PegGridToJson {
     companion object {
-        fun createJsonFor(pegView: PegView): String {
-            val jsonString = Gson().toJson(PegAsJson.fromViewObject(pegView))
+        fun createJsonFor(peg: Peg): String {
+            val jsonString = Gson().toJson(PegAsJson.fromViewObject(peg))
             return jsonString
         }
     }
@@ -20,14 +20,14 @@ data class PegAsJson(
         val g: Int?,
         val b: Int?) {
     companion object {
-        fun fromViewObject(pegView: PegView): PegAsJson {
-            val color = pegView.color?.let {
+        fun fromViewObject(peg: Peg): PegAsJson {
+            val color = peg.color?.let {
                 Color.valueOf(it)
             }
             return PegAsJson(
-                x = pegView.columnIndex,
-                y = pegView.rowIndex,
-                s = if (pegView.selected) "t" else "f",
+                x = peg.columnIndex,
+                y = peg.rowIndex,
+                s = if (peg.selected) "t" else "f",
                 r = as255Int(color?.red()),
                 g = as255Int(color?.green()),
                 b = as255Int(color?.blue())

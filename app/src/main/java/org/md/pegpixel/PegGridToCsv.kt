@@ -5,13 +5,13 @@ import java.util.*
 
 class PegGridToCsv{
     companion object {
-        fun createCsvFor(pegView: PegView): String {
+        fun createCsvFor(peg: Peg): String {
             val csvBuilder = StringJoiner(",", "", "\n")
 
-            csvBuilder.add(pegView.columnIndex.toString())
-            csvBuilder.add(pegView.rowIndex.toString())
-            csvBuilder.add(pegView.selected.toString())
-            pegView.color?.let {
+            csvBuilder.add(peg.columnIndex.toString())
+            csvBuilder.add(peg.rowIndex.toString())
+            csvBuilder.add(peg.selected.toString())
+            peg.color?.let {
                 val color = Color.valueOf(it)
                 csvBuilder.add(as255String(color.red()))
                 csvBuilder.add(as255String(color.green()))
