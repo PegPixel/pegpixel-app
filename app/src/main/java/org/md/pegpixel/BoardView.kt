@@ -46,7 +46,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
     private var allPegsWithButtons = listOf<PegWithCheckBox>();
 
     private fun initiateGrid(rootTable: TableLayout): List<Peg> {
-         allPegsWithButtons = PegGrid.addGridTo(
+         allPegsWithButtons = PegGrid.initialize(
                 columnCount = 7,
                 rowCount = 5,
                 tableLayout = rootTable

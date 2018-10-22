@@ -6,8 +6,7 @@ import com.google.gson.Gson
 class PegGridToJson {
     companion object {
         fun createJsonFor(peg: Peg): String {
-            val jsonString = Gson().toJson(PegAsJson.fromViewObject(peg))
-            return jsonString
+            return Gson().toJson(PegAsJson.fromViewObject(peg))
         }
     }
 }

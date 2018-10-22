@@ -1,8 +1,6 @@
 package org.md.pegpixel
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.support.v4.widget.CompoundButtonCompat
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.TableLayout
@@ -14,7 +12,7 @@ class PegGrid {
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT)
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-        fun addGridTo(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegWithCheckBox> {
+        fun initialize(columnCount: Int, rowCount: Int, tableLayout: TableLayout): List<PegWithCheckBox> {
             return createPegViews(columnCount, rowCount)
                     .flatMap{addToTable(it, tableLayout)}
 
@@ -55,22 +53,5 @@ class PegGrid {
             checkbox.id = (peg.columnIndex * 10) + peg.rowIndex
             return checkbox
         }
-    }
-}
-
-
-
-data class PegWithCheckBox(val peg: Peg, val checkBox: CheckBox) {
-    fun selectWithColor(newColor: Int){
-        peg.selected = true
-        updateColor(newColor)
-        checkBox.isChecked = peg.selected
-    }
-
-
-    fun updateColor(newColor: Int) {
-        peg.color = newColor
-        val newColorStateList = ColorStateList.valueOf(newColor)
-        CompoundButtonCompat.setButtonTintList(checkBox, newColorStateList)
     }
 }
