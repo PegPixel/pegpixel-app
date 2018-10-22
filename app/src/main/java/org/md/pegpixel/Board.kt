@@ -5,31 +5,23 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TableLayout
-import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
-import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import kotlin.concurrent.thread
 
-class Board(private val allPegsWithButtons: List<PegView>, private val bluetoothDeviceName: String, bluetoothConnectionStatus: BluetoothConnectionStatus){
-
-    private val bluetoothConnectionToBoard: BluetoothConnectionToBoardManager = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
+class Board(private val allPegsWithButtons: List<PegView>){
 
     companion object {
-        fun create(
-                rootTable: TableLayout,
-                bluetoothDeviceName: String,
-                bluetoothConnectionStatus: BluetoothConnectionStatus): Board {
+        fun create(rootTable: TableLayout): Board {
 
             val allPegsWithButtons = PegGrid.initialize(
                     columnCount = 4,
                     rowCount = 4,
                     tableLayout = rootTable
             )
-
-            return Board(allPegsWithButtons, bluetoothDeviceName, bluetoothConnectionStatus)
+            return Board(allPegsWithButtons)
         }
     }
 
-    fun initiateSendAllButton(sendAllButton: Button) {
+    fun initiateSendAllButton(sendAllButton: Button, sendViaBt: (Peg) -> Unit) {
         sendAllButton.setOnClickListener {
             thread {
                 allPegsWithButtons.forEach { pegView ->
@@ -42,7 +34,7 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
     }
 
 
-    fun setupEventListeners(fragmentManager: FragmentManager): List<Peg> {
+    fun setupEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit): List<Peg> {
         allPegsWithButtons.forEach { pegViewWithCheckbox ->
             pegViewWithCheckbox.updateColor(Color.RED)
 
@@ -66,7 +58,7 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
         return true
     }
 
-    fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
+    fun handleSelectedColor(pegViewId: Int, selectedColor: Int, sendViaBt: (Peg) -> Unit) {
         allPegsWithButtons
                 .filter { !it.button.isChecked }
                 .forEach { it.updateColor(selectedColor) }
@@ -78,21 +70,4 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
             sendViaBt(it.peg)
         }
     }
-
-    private fun sendViaBt(peg: Peg) {
-        val json = PegGridToJson.createJsonFor(peg)
-        thread {
-            bluetoothConnectionToBoard.sendData("$json\n")
-        }
-    }
-
-    fun initiateBluetoothConnection() {
-        bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
-    }
-
-
-    fun closeBtConnection() {
-        bluetoothConnectionToBoard.close()
-    }
-
 }
