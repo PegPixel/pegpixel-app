@@ -47,7 +47,7 @@ class PegGrid {
         }
 
         private fun createCheckBox(context: Context?, peg: Peg): CompoundButton {
-            val checkbox = RadioButton(context)
+            val checkbox = CheckBox(context, null, android.R.attr.radioButtonStyle)
             checkbox.layoutParams = rowParams
             val padding = 32
             checkbox.setPadding(padding, padding, padding, padding)
