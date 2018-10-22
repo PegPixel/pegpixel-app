@@ -9,7 +9,7 @@ import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import kotlin.concurrent.thread
 
-class Board(private val allPegsWithButtons: List<PegView>, private val bluetoothDeviceName: String, bluetoothConnectionStatus: BluetoothConnectionStatus) : PickColorFragment.SelectedColorListener {
+class Board(private val allPegsWithButtons: List<PegView>, private val bluetoothDeviceName: String, bluetoothConnectionStatus: BluetoothConnectionStatus){
 
     private val bluetoothConnectionToBoard: BluetoothConnectionToBoardManager = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
 
@@ -66,19 +66,7 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
         return true
     }
 
-
-    private fun sendViaBt(peg: Peg) {
-        val json = PegGridToJson.createJsonFor(peg)
-        thread {
-            bluetoothConnectionToBoard.sendData("$json\n")
-        }
-    }
-
-    fun initiateBluetoothConnection() {
-        bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
-    }
-
-    override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
+    fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
         allPegsWithButtons
                 .filter { !it.button.isChecked }
                 .forEach { it.updateColor(selectedColor) }
@@ -91,7 +79,20 @@ class Board(private val allPegsWithButtons: List<PegView>, private val bluetooth
         }
     }
 
+    private fun sendViaBt(peg: Peg) {
+        val json = PegGridToJson.createJsonFor(peg)
+        thread {
+            bluetoothConnectionToBoard.sendData("$json\n")
+        }
+    }
+
+    fun initiateBluetoothConnection() {
+        bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
+    }
+
+
     fun closeBtConnection() {
         bluetoothConnectionToBoard.close()
     }
+
 }

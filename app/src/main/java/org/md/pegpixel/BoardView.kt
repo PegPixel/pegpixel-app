@@ -5,7 +5,7 @@ import android.os.Bundle
 import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
 
 
-class BoardView : AppCompatActivity(){
+class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
     private val bluetoothDeviceName = "DSD TECH HC-05"
 
@@ -29,6 +29,10 @@ class BoardView : AppCompatActivity(){
         board.initiateBluetoothConnection()
 
         this.board = board
+    }
+
+    override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
+        board?.handleSelectedColor(pegViewId, selectedColor)
     }
 
     override fun onDestroy() {
