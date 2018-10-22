@@ -20,8 +20,8 @@ class PegGrid {
         }
 
         private fun createPegViews(columnCount: Int, rowCount: Int): List<List<Peg>> {
-            return(rowCount downTo 1).map{currentRow ->
-                    (1 .. columnCount).map{currentColumn ->
+            return(rowCount downTo 0).map{currentRow ->
+                    (0 .. columnCount).map{currentColumn ->
                     Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
                     Peg(currentColumn, currentRow, false)
                 }
