@@ -25,10 +25,10 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
 
         val allPegsWithButtons = PegGrid.initialize(
-                columnCount = 7,
-                rowCount = 5,
-                defaultColor = Color.RED,
-                tableLayout = findViewById(R.id.pegTableLayout)
+            columnCount = 7,
+            rowCount = 5,
+            defaultColor = Color.RED,
+            tableLayout = findViewById(R.id.pegTableLayout)
         )
         val board = BoardEvents(allPegsWithButtons)
 
