@@ -1,7 +1,8 @@
-package org.md.pegpixel
+package org.md.pegpixel.serialized
 
 import android.graphics.Color
 import com.google.gson.Gson
+import org.md.pegpixel.pegboard.Peg
 
 class PegGridToJson {
     companion object {
@@ -24,12 +25,12 @@ data class PegAsJson(
                 Color.valueOf(it)
             }
             return PegAsJson(
-                x = peg.columnIndex,
-                y = peg.rowIndex,
-                s = if (peg.selected) "t" else "f",
-                r = as255Int(color?.red()),
-                g = as255Int(color?.green()),
-                b = as255Int(color?.blue())
+                    x = peg.columnIndex,
+                    y = peg.rowIndex,
+                    s = if (peg.selected) "t" else "f",
+                    r = as255Int(color?.red()),
+                    g = as255Int(color?.green()),
+                    b = as255Int(color?.blue())
             )
         }
 

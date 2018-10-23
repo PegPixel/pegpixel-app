@@ -1,9 +1,10 @@
-package org.md.pegpixel
+package org.md.pegpixel.serialized
 
 import android.graphics.Color
+import org.md.pegpixel.pegboard.Peg
 import java.util.*
 
-class PegGridToCsv{
+class PegToCsv{
     companion object {
         fun createCsvFor(peg: Peg): String {
             val csvBuilder = StringJoiner(",", "", "\n")

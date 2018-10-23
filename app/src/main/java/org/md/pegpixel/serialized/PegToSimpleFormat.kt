@@ -1,8 +1,9 @@
-package org.md.pegpixel
+package org.md.pegpixel.serialized
 
 import android.graphics.Color
+import org.md.pegpixel.pegboard.Peg
 
-class PegGridToSimpleFormat{
+class PegToSimpleFormat{
     companion object {
         fun createSimpleFormatFor(peg: Peg): String {
             val csvBuilder = StringBuilder()

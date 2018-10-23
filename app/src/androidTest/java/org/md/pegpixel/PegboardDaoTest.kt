@@ -12,10 +12,11 @@ import android.arch.persistence.room.Room
 import android.graphics.Color
 import org.hamcrest.Matchers.`is`
 import org.junit.After
+import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
-import org.md.pegpixel.pegboard.PegboardDao
-import org.md.pegpixel.pegboard.PegpixelDatabase
-import org.md.pegpixel.pegboard.PersistedPegboardConverter
+import org.md.pegpixel.persistence.PegboardDao
+import org.md.pegpixel.persistence.PegpixelDatabase
+import org.md.pegpixel.persistence.PersistedPegboardConverter
 
 
 @RunWith(AndroidJUnit4::class)

@@ -1,4 +1,4 @@
-package org.md.pegpixel
+package org.md.pegpixel.persistence
 
 import org.md.pegpixel.pegboard.*
 import android.content.Context

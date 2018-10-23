@@ -1,4 +1,4 @@
-package org.md.pegpixel.pegboard
+package org.md.pegpixel.persistence
 
 import android.arch.persistence.room.*
 

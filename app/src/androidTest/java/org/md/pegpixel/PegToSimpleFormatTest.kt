@@ -10,18 +10,19 @@ import org.junit.runner.RunWith
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-
+import org.md.pegpixel.pegboard.Peg
+import org.md.pegpixel.serialized.PegToSimpleFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class PegGridToSimpleFormatTest {
+class PegToSimpleFormatTest {
 
     @Test
     fun extracts_selected_color() {
         val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 1f, 0f)
         peg.color = green.toArgb()
-        val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)
+        val createdJson = PegToSimpleFormat.createSimpleFormatFor(peg)
         assertThat(createdJson, `is`("""11t000255000"""))
     }
 
@@ -30,7 +31,7 @@ class PegGridToSimpleFormatTest {
         val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 0f, 0f)
         peg.color = green.toArgb()
-        val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)
+        val createdJson = PegToSimpleFormat.createSimpleFormatFor(peg)
         assertThat(createdJson, `is`("""11t000000000"""))
     }
 }

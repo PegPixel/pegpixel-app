@@ -1,10 +1,10 @@
 package org.md.pegpixel
 
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.widget.*
+import org.md.pegpixel.pegboard.Peg
 
 class PegGrid {
 
@@ -23,7 +23,7 @@ class PegGrid {
             return(rowCount - 1 downTo 0).map{currentRow ->
                     (0 until columnCount).map{ currentColumn ->
                     Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
-                    Peg(currentColumn, currentRow, false, defaultColor)
+                        Peg(currentColumn, currentRow, false, defaultColor)
                 }
             }
         }

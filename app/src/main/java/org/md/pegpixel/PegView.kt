@@ -3,6 +3,7 @@ package org.md.pegpixel
 import android.content.res.ColorStateList
 import android.support.v4.widget.CompoundButtonCompat
 import android.widget.CompoundButton
+import org.md.pegpixel.pegboard.Peg
 
 data class PegView(val peg: Peg, val button: CompoundButton) {
     fun selectWithColor(newColor: Int){

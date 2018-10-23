@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
+import org.md.pegpixel.persistence.BoardPersistence
 import kotlin.concurrent.thread
 
 class BoardEvents(private val allPegsWithButtons: List<PegView>){

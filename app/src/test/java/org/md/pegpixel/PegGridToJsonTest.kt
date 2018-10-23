@@ -3,6 +3,8 @@ package org.md.pegpixel
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Test
+import org.md.pegpixel.pegboard.Peg
+import org.md.pegpixel.serialized.PegGridToJson
 
 class PegGridToJsonTest {
 

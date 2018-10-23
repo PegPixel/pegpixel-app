@@ -1,4 +1,4 @@
-package org.md.pegpixel
+package org.md.pegpixel.pegboard
 
 class Peg(
         val columnIndex: Int,
