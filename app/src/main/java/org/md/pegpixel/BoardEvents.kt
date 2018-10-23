@@ -24,7 +24,7 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
 
     fun setupEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit): List<Peg> {
         allPegsWithButtons.forEach { pegViewWithCheckbox ->
-            pegViewWithCheckbox.updateColor(Color.RED)
+            pegViewWithCheckbox.updateColor(pegViewWithCheckbox.peg.color)
 
             pegViewWithCheckbox.button.setOnClickListener {
                 pegViewWithCheckbox.peg.toggleSelect()

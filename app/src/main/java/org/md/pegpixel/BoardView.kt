@@ -1,5 +1,6 @@
 package org.md.pegpixel
 
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
@@ -26,6 +27,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         val allPegsWithButtons = PegGrid.initialize(
                 columnCount = 7,
                 rowCount = 5,
+                defaultColor = Color.RED,
                 tableLayout = findViewById(R.id.pegTableLayout)
         )
         val board = BoardEvents(allPegsWithButtons)

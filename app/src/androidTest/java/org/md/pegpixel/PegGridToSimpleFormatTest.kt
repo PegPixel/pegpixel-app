@@ -18,7 +18,7 @@ class PegGridToSimpleFormatTest {
 
     @Test
     fun extracts_selected_color() {
-        val peg = Peg(1, 1, true)
+        val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 1f, 0f)
         peg.color = green.toArgb()
         val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)
@@ -27,7 +27,7 @@ class PegGridToSimpleFormatTest {
 
     @Test
     fun extracts_when_no_color_selected() {
-        val peg = Peg(1, 1, true)
+        val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 0f, 0f)
         peg.color = green.toArgb()
         val createdJson = PegGridToSimpleFormat.createSimpleFormatFor(peg)
