@@ -13,7 +13,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoardManager? = null
 
-    private var board: Board? = null
+    private var boardEvents: BoardEvents? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,17 +23,22 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         val bluetoothConnectionToBoard = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
         bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
 
-        val board = Board.create(findViewById(R.id.pegTableLayout))
+        val allPegsWithButtons = PegGrid.initialize(
+                columnCount = 7,
+                rowCount = 5,
+                tableLayout = findViewById(R.id.pegTableLayout)
+        )
+        val board = BoardEvents(allPegsWithButtons)
 
         board.setupEventListeners(fragmentManager, this::sendViaBt)
         board.initiateSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
 
-        this.board = board
+        this.boardEvents = board
         this.bluetoothConnectionToBoard = bluetoothConnectionToBoard
     }
 
     override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
-        board?.handleSelectedColor(pegViewId, selectedColor, this::sendViaBt)
+        boardEvents?.handleSelectedColor(pegViewId, selectedColor, this::sendViaBt)
     }
 
     override fun onDestroy() {

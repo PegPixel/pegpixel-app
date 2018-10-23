@@ -7,19 +7,7 @@ import android.widget.Button
 import android.widget.TableLayout
 import kotlin.concurrent.thread
 
-class Board(private val allPegsWithButtons: List<PegView>){
-
-    companion object {
-        fun create(rootTable: TableLayout): Board {
-
-            val allPegsWithButtons = PegGrid.initialize(
-                    columnCount = 4,
-                    rowCount = 4,
-                    tableLayout = rootTable
-            )
-            return Board(allPegsWithButtons)
-        }
-    }
+class BoardEvents(private val allPegsWithButtons: List<PegView>){
 
     fun initiateSendAllButton(sendAllButton: Button, sendViaBt: (Peg) -> Unit) {
         sendAllButton.setOnClickListener {
