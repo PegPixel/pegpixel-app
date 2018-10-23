@@ -3,10 +3,15 @@ package org.md.pegpixel
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import org.md.pegpixel.pegboard.PegboardDao
+import org.md.pegpixel.pegboard.PersistedPegboard
+import org.md.pegpixel.pegboard.RoomConverters
 
 
 @Database(entities = [PersistedPegboard::class], version = 1, exportSchema = false)
+@TypeConverters(RoomConverters::class)
 abstract class PegpixelDatabase : RoomDatabase() {
     abstract fun pegboardDao(): PegboardDao
 

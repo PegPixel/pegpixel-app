@@ -9,7 +9,12 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 import org.junit.Before
 import android.arch.persistence.room.Room
+import android.graphics.Color
 import org.hamcrest.Matchers.`is`
+import org.junit.After
+import org.md.pegpixel.pegboard.Pegboard
+import org.md.pegpixel.pegboard.PegboardDao
+import org.md.pegpixel.pegboard.PersistedPegboardCreator
 
 
 @RunWith(AndroidJUnit4::class)
@@ -27,10 +32,21 @@ class PegboardDaoTest {
 
     @Test
     fun savesAndLoadsPegboard() {
-        val persistedPegboard = PersistedPegboard("new board")
+        val peg = Peg(1, 2, false, Color.RED)
+        val pegs = arrayListOf(peg)
+        val persistedPegboard = PersistedPegboardCreator.create(Pegboard("new board", pegs))
         pegboardDao?.insert(persistedPegboard)
         val loadedPegboard = pegboardDao?.loadByName(persistedPegboard.name)
-
+        val loadedPeg = loadedPegboard?.pegs?.first()
         assertThat(loadedPegboard?.name, `is`(persistedPegboard.name))
+        assertThat(loadedPeg?.columnIndex, `is`(peg.columnIndex))
+        assertThat(loadedPeg?.rowIndex, `is`(peg.rowIndex))
+        assertThat(loadedPeg?.selected, `is`(peg.selected))
+        assertThat(loadedPeg?.color, `is`(peg.color))
+    }
+
+    @After
+    fun closeDb() {
+        pegpixelDatabase?.close()
     }
 }
