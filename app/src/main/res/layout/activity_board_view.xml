@@ -15,6 +15,7 @@
         android:layout_height="250dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="30dp"
         android:background="@mipmap/wood_background"
         android:gravity="center"
         android:stretchColumns="1"
@@ -22,6 +23,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TableLayout>
+
+    <EditText
+        android:id="@+id/boardName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="text"
+        android:text="Name"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pegTableLayout" />
 
     <CheckBox
         android:id="@+id/connectionStatus"
@@ -41,8 +54,27 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/send_all_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saveButtonText"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/loadButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/loadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loadButtonText"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
 

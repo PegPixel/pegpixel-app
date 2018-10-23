@@ -1,12 +1,10 @@
 package org.md.pegpixel.pegboard
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface PegboardDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(persistedPegboard: PersistedPegboard)
 
     @Query("SELECT * FROM persistedpegboard WHERE name = :name LIMIT 1")

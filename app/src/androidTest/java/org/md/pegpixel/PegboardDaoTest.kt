@@ -14,7 +14,8 @@ import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.md.pegpixel.pegboard.Pegboard
 import org.md.pegpixel.pegboard.PegboardDao
-import org.md.pegpixel.pegboard.PersistedPegboardCreator
+import org.md.pegpixel.pegboard.PegpixelDatabase
+import org.md.pegpixel.pegboard.PersistedPegboardConverter
 
 
 @RunWith(AndroidJUnit4::class)
@@ -34,7 +35,7 @@ class PegboardDaoTest {
     fun savesAndLoadsPegboard() {
         val peg = Peg(1, 2, false, Color.RED)
         val pegs = arrayListOf(peg)
-        val persistedPegboard = PersistedPegboardCreator.create(Pegboard("new board", pegs))
+        val persistedPegboard = PersistedPegboardConverter.createFrom(Pegboard("new board", pegs))
         pegboardDao?.insert(persistedPegboard)
         val loadedPegboard = pegboardDao?.loadByName(persistedPegboard.name)
         val loadedPeg = loadedPegboard?.pegs?.first()

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
+import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
 
 
@@ -24,6 +25,8 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         val bluetoothConnectionToBoard = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
         bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
 
+        val boardPersistence = BoardPersistence(applicationContext)
+
         val allPegsWithButtons = PegGrid.initialize(
             columnCount = 7,
             rowCount = 5,
@@ -34,6 +37,16 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
         board.setupEventListeners(fragmentManager, this::sendViaBt)
         board.initiateSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
+        
+        board.setupSaveButton(
+                findViewById(R.id.saveButton),
+                findViewById(R.id.boardName),
+                boardPersistence)
+
+        board.setupLoadButton(
+                findViewById(R.id.loadButton),
+                findViewById(R.id.boardName),
+                boardPersistence)
 
         this.boardEvents = board
         this.bluetoothConnectionToBoard = bluetoothConnectionToBoard

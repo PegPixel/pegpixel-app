@@ -23,7 +23,7 @@ class BluetoothConnectionToBoardManager(bluetoothDeviceName: String, private val
                     bluetoothSocket.connect()
                     EstablishedBluetoothConnectionToBoard(bluetoothSocket)
                 } catch (e: IOException) {
-                    Log.i("STUFF", "create: could not connect to $bluetoothDeviceName - ${e.message}")
+                    Log.i("STUFF", "createFrom: could not connect to $bluetoothDeviceName - ${e.message}")
                     PendingBluetoothConnectionToBoard(bluetoothDeviceName)
                 }
             }

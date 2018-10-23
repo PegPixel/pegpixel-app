@@ -1,10 +1,11 @@
 package org.md.pegpixel
 
 import android.app.FragmentManager
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TableLayout
+import android.widget.EditText
+import android.widget.TextView
+import org.md.pegpixel.pegboard.Pegboard
 import kotlin.concurrent.thread
 
 class BoardEvents(private val allPegsWithButtons: List<PegView>){
@@ -48,14 +49,46 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
 
     fun handleSelectedColor(pegViewId: Int, selectedColor: Int, sendViaBt: (Peg) -> Unit) {
         allPegsWithButtons
-                .filter { !it.button.isChecked }
-                .forEach { it.updateColor(selectedColor) }
+            .filter { !it.button.isChecked }
+            .forEach { it.updateColor(selectedColor) }
 
         allPegsWithButtons.find {
             it.button.id == pegViewId
         }?.let {
             it.selectWithColor(selectedColor)
             sendViaBt(it.peg)
+        }
+    }
+
+    fun setupSaveButton(saveButton: Button,
+                        boardName: EditText,
+                        boardPersistence: BoardPersistence) {
+        saveButton.setOnClickListener{ _ ->
+            val pegboard = Pegboard(boardName.text.toString(), allPegsWithButtons.map { it.peg })
+            boardPersistence.save(pegboard)
+        }
+    }
+
+
+    fun setupLoadButton(loadButton: Button,
+                        boardName: EditText,
+                        boardPersistence: BoardPersistence) {
+        loadButton.setOnClickListener{ _ ->
+            val name = boardName.text.toString()
+            boardPersistence.load(name).thenAccept { pegboard ->
+                pegboard?.pegs?.forEach { loadedPeg ->
+                    val findMatching = findMatching(loadedPeg)
+                    findMatching?.update(loadedPeg.selected, loadedPeg.color)
+                }
+                boardName.setText(pegboard?.name, TextView.BufferType.EDITABLE)
+            }
+        }
+    }
+
+    private fun findMatching(loadedPeg: Peg): PegView? {
+        return allPegsWithButtons.find {
+            it.peg.columnIndex == loadedPeg.columnIndex &&
+            it.peg.rowIndex    == loadedPeg.rowIndex
         }
     }
 }

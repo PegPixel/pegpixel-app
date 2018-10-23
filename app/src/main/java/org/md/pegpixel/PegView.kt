@@ -6,11 +6,14 @@ import android.widget.CompoundButton
 
 data class PegView(val peg: Peg, val button: CompoundButton) {
     fun selectWithColor(newColor: Int){
-        peg.selected = true
-        updateColor(newColor)
-        button.isChecked = peg.selected
+        update(true, newColor)
     }
 
+    fun update(selected: Boolean, newColor: Int) {
+        peg.selected = selected
+        button.isChecked = peg.selected
+        updateColor(newColor)
+    }
 
     fun updateColor(newColor: Int) {
         peg.color = newColor

@@ -5,4 +5,6 @@
     <string name="status_connected">Board connected</string>
 
     <string name="send_all_button_text">Send all</string>
+    <string name="saveButtonText">Save</string>
+    <string name="loadButtonText">Load</string>
 </resources>

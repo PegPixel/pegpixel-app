@@ -1,13 +1,10 @@
-package org.md.pegpixel
+package org.md.pegpixel.pegboard
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import org.md.pegpixel.pegboard.PegboardDao
-import org.md.pegpixel.pegboard.PersistedPegboard
-import org.md.pegpixel.pegboard.RoomConverters
 
 
 @Database(entities = [PersistedPegboard::class], version = 1, exportSchema = false)
@@ -18,7 +15,7 @@ abstract class PegpixelDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: PegpixelDatabase? = null
 
-        fun getInstance(context: Context): PegpixelDatabase? {
+        fun getInstance(context: Context): PegpixelDatabase {
             if (INSTANCE == null) {
                 synchronized(PegpixelDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -26,7 +23,7 @@ abstract class PegpixelDatabase : RoomDatabase() {
                             .build()
                 }
             }
-            return INSTANCE
+            return INSTANCE!!
         }
 
         fun destroyInstance() {
