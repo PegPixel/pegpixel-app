@@ -13,17 +13,14 @@ class PegGrid {
         private val tableParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT)
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
 
-        fun initialize(columnCount: Int, rowCount: Int, defaultColor: Int, tableLayout: TableLayout): List<PegView> {
+        fun initializeAndAddToView(columnCount: Int, rowCount: Int, defaultColor: Int, tableLayout: TableLayout): List<PegView> {
             return createPegs(columnCount, rowCount, defaultColor)
                     .flatMap{addToTable(it, tableLayout)}
-
-
         }
 
         private fun createPegs(columnCount: Int, rowCount: Int, defaultColor: Int): List<List<Peg>> {
             return(rowCount - 1 downTo 0).map{currentRow ->
                     (0 until columnCount).map{ currentColumn ->
-                    Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
                         Peg(currentColumn, currentRow, false, defaultColor)
                 }
             }

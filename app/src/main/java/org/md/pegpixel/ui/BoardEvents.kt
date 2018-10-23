@@ -13,7 +13,7 @@ import kotlin.concurrent.thread
 
 class BoardEvents(private val allPegsWithButtons: List<PegView>){
 
-    fun initiateSendAllButton(sendAllButton: Button, sendViaBt: (Peg) -> Unit) {
+    fun setupSendAllButton(sendAllButton: Button, sendViaBt: (Peg) -> Unit) {
         sendAllButton.setOnClickListener {
             thread {
                 allPegsWithButtons.forEach { pegView ->
@@ -26,7 +26,7 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
     }
 
 
-    fun setupEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit): List<Peg> {
+    fun setupPegEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit): List<Peg> {
         allPegsWithButtons.forEach { pegViewWithCheckbox ->
             pegViewWithCheckbox.updateColor(pegViewWithCheckbox.peg.color)
 

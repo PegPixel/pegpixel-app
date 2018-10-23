@@ -30,28 +30,28 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
         val boardPersistence = BoardPersistence(applicationContext)
 
-        val allPegsWithButtons = PegGrid.initialize(
+        val allPegsWithButtons = PegGrid.initializeAndAddToView(
             columnCount = 7,
             rowCount = 5,
             defaultColor = Color.RED,
             tableLayout = findViewById(R.id.pegTableLayout)
         )
-        val board = BoardEvents(allPegsWithButtons)
+        val boardEvents = BoardEvents(allPegsWithButtons)
 
-        board.setupEventListeners(fragmentManager, this::sendViaBt)
-        board.initiateSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
+        boardEvents.setupPegEventListeners(fragmentManager, this::sendViaBt)
+        boardEvents.setupSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
         
-        board.setupSaveButton(
+        boardEvents.setupSaveButton(
                 findViewById(R.id.saveButton),
                 findViewById(R.id.boardName),
                 boardPersistence)
 
-        board.setupLoadButton(
+        boardEvents.setupLoadButton(
                 findViewById(R.id.loadButton),
                 findViewById(R.id.boardName),
                 boardPersistence)
 
-        this.boardEvents = board
+        this.boardEvents = boardEvents
         this.bluetoothConnectionToBoard = bluetoothConnectionToBoard
     }
 
@@ -63,7 +63,6 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         super.onDestroy()
         bluetoothConnectionToBoard?.close()
     }
-
 
     private fun sendViaBt(peg: Peg) {
         val json = PegGridToJson.createJsonFor(peg)
