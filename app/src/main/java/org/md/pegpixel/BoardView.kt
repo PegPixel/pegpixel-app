@@ -3,11 +3,12 @@ package org.md.pegpixel
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import org.md.pegpixel.bluetooth.BluetoothConnectionStatus
+import org.md.pegpixel.ui.BluetoothConnectionStatus
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.persistence.BoardPersistence
 import org.md.pegpixel.serialized.PegGridToJson
+import org.md.pegpixel.ui.BoardEvents
 import kotlin.concurrent.thread
 
 

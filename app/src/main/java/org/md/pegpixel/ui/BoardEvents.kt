@@ -1,10 +1,11 @@
-package org.md.pegpixel
+package org.md.pegpixel.ui
 
 import android.app.FragmentManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import org.md.pegpixel.PickColorFragment
 import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
 import org.md.pegpixel.persistence.BoardPersistence

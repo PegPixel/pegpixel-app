@@ -1,4 +1,4 @@
-package org.md.pegpixel.bluetooth
+package org.md.pegpixel.ui
 
 import android.content.Context
 import android.widget.CheckBox

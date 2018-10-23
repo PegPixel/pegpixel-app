@@ -2,6 +2,7 @@ package org.md.pegpixel.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.util.Log
+import org.md.pegpixel.ui.BluetoothConnectionStatus
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.CompletableFuture

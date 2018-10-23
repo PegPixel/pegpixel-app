@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.*
 import org.md.pegpixel.pegboard.Peg
+import org.md.pegpixel.ui.PegView
 
 class PegGrid {
 
@@ -13,13 +14,13 @@ class PegGrid {
         private val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
 
         fun initialize(columnCount: Int, rowCount: Int, defaultColor: Int, tableLayout: TableLayout): List<PegView> {
-            return createPegViews(columnCount, rowCount, defaultColor)
+            return createPegs(columnCount, rowCount, defaultColor)
                     .flatMap{addToTable(it, tableLayout)}
 
 
         }
 
-        private fun createPegViews(columnCount: Int, rowCount: Int, defaultColor: Int): List<List<Peg>> {
+        private fun createPegs(columnCount: Int, rowCount: Int, defaultColor: Int): List<List<Peg>> {
             return(rowCount - 1 downTo 0).map{currentRow ->
                     (0 until columnCount).map{ currentColumn ->
                     Log.i("STUFF", "creating pegview column: $currentColumn row: $currentRow")
@@ -34,12 +35,12 @@ class PegGrid {
             tableRow.layoutParams = tableParams
             tableRow.gravity = Gravity.CENTER
 
-            val allPegsInRow = pegs.map { pegView ->
-                rowParams.column = pegView.columnIndex
-                val checkbox = createCheckBox(context, pegView)
+            val allPegsInRow = pegs.map { peg ->
+                rowParams.column = peg.columnIndex
+                val checkbox = createCheckBox(context, peg)
 
                 tableRow.addView(checkbox)
-                PegView(pegView, checkbox)
+                PegView(peg, checkbox)
             }
             tableLayout.addView(tableRow)
 

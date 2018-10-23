@@ -1,4 +1,4 @@
-package org.md.pegpixel
+package org.md.pegpixel.ui
 
 import android.content.res.ColorStateList
 import android.support.v4.widget.CompoundButtonCompat
