@@ -21,16 +21,13 @@ data class PegAsJson(
         val b: Int?) {
     companion object {
         fun fromViewObject(peg: Peg): PegAsJson {
-            val color = peg.color.let {
-                Color.valueOf(it)
-            }
             return PegAsJson(
                     x = peg.columnIndex,
                     y = peg.rowIndex,
                     s = if (peg.selected) "t" else "f",
-                    r = as255Int(color?.red()),
-                    g = as255Int(color?.green()),
-                    b = as255Int(color?.blue())
+                    r = Color.red(peg.color),
+                    g = Color.green(peg.color),
+                    b = Color.blue(peg.color)
             )
         }
 

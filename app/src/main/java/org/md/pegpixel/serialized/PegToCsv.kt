@@ -13,17 +13,12 @@ class PegToCsv{
             csvBuilder.add(peg.rowIndex.toString())
             csvBuilder.add(peg.selected.toString())
             peg.color.let {
-                val color = Color.valueOf(it)
-                csvBuilder.add(as255String(color.red()))
-                csvBuilder.add(as255String(color.green()))
-                csvBuilder.add(as255String(color.blue()))
+                csvBuilder.add(Color.red(peg.color).toString())
+                csvBuilder.add(Color.green(peg.color).toString())
+                csvBuilder.add(Color.blue(peg.color).toString())
 
             }
             return csvBuilder.toString()
-        }
-
-        private fun as255String(floatColor: Float): String{
-            return floatColor.times(255).toInt().toString()
         }
     }
 }
