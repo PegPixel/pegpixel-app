@@ -3,8 +3,8 @@ package org.md.pegpixel.ui
 class PegboardView(private val allPegViews: List<PegView>) {
     fun updateColorForNonSelectedPegs(selectedColor: Int) {
         allPegViews
-                .filter { !it.button.isChecked }
-                .forEach { it.updatePegColor(selectedColor) }
+            .filter { !it.button.isChecked }
+            .forEach { it.updatePegColor(selectedColor) }
     }
 
     fun findById(pegViewId: Int): PegView? {
@@ -12,5 +12,4 @@ class PegboardView(private val allPegViews: List<PegView>) {
             it.button.id == pegViewId
         }
     }
-
 }
