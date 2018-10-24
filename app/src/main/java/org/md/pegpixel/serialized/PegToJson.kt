@@ -21,7 +21,7 @@ data class PegAsJson(
         val b: Int?) {
     companion object {
         fun fromViewObject(peg: Peg): PegAsJson {
-            val color = peg.color?.let {
+            val color = peg.color.let {
                 Color.valueOf(it)
             }
             return PegAsJson(

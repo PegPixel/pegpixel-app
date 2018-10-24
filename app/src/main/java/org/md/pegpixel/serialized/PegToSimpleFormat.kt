@@ -15,7 +15,7 @@ class PegToSimpleFormat{
             csvBuilder.append(peg.rowIndex.toString())
             csvBuilder.append(selected)
 
-            val color = Color.valueOf(peg.color ?: 0)
+            val color = Color.valueOf(peg.color)
             csvBuilder.append(as255String(color.red()))
             csvBuilder.append(as255String(color.green()))
             csvBuilder.append(as255String(color.blue()))

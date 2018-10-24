@@ -12,7 +12,7 @@ class PegToCsv{
             csvBuilder.add(peg.columnIndex.toString())
             csvBuilder.add(peg.rowIndex.toString())
             csvBuilder.add(peg.selected.toString())
-            peg.color?.let {
+            peg.color.let {
                 val color = Color.valueOf(it)
                 csvBuilder.add(as255String(color.red()))
                 csvBuilder.add(as255String(color.green()))
