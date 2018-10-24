@@ -18,7 +18,7 @@ import org.md.pegpixel.serialized.PegToSimpleFormat
 class PegToSimpleFormatTest {
 
     @Test
-    fun extracts_selected_color() {
+    fun extractsSelectedColor() {
         val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 1f, 0f)
         peg.color = green.toArgb()
@@ -27,7 +27,7 @@ class PegToSimpleFormatTest {
     }
 
     @Test
-    fun extracts_when_no_color_selected() {
+    fun extractsWhenNoColorSelected() {
         val peg = Peg(1, 1, true, Color.RED)
         val green = Color.valueOf(0f, 0f, 0f)
         peg.color = green.toArgb()
