@@ -29,7 +29,7 @@ class BoardEvents(private val allPegViews: List<PegView>){
     fun setupPegEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit) {
         allPegViews.forEach { pegView ->
             pegView.button.setOnClickListener {
-                pegView.peg.toggleSelect()
+                pegView.toggleSelect()
                 sendViaBt(pegView.peg)
             }
             pegView.button.setOnLongClickListener {

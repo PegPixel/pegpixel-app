@@ -4,7 +4,7 @@ class PegboardView(private val allPegViews: List<PegView>) {
     fun updateColorForNonSelectedPegs(selectedColor: Int) {
         allPegViews
                 .filter { !it.button.isChecked }
-                .forEach { it.updateColor(selectedColor) }
+                .forEach { it.updatePegColor(selectedColor) }
     }
 
     fun findById(pegViewId: Int): PegView? {
