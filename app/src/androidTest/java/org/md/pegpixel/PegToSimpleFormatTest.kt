@@ -20,8 +20,7 @@ class PegToSimpleFormatTest {
     @Test
     fun extractsSelectedColor() {
         val peg = Peg(1, 1, true, Color.RED)
-        val green = Color.valueOf(0f, 1f, 0f)
-        peg.color = green.toArgb()
+        peg.color = Color.GREEN
         val createdJson = PegToSimpleFormat.createSimpleFormatFor(peg)
         assertThat(createdJson, `is`("""11t000255000"""))
     }
@@ -29,8 +28,7 @@ class PegToSimpleFormatTest {
     @Test
     fun extractsWhenNoColorSelected() {
         val peg = Peg(1, 1, true, Color.RED)
-        val green = Color.valueOf(0f, 0f, 0f)
-        peg.color = green.toArgb()
+        peg.color = Color.BLACK
         val createdJson = PegToSimpleFormat.createSimpleFormatFor(peg)
         assertThat(createdJson, `is`("""11t000000000"""))
     }
