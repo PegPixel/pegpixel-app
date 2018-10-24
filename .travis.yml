@@ -22,8 +22,8 @@ env:
 android:
   components:
     - tools
-    - tools
     - platform-tools
+    - tools
     # The BuildTools version used by your project
     - build-tools-$ANDROID_BUILD_TOOLS
 
@@ -34,12 +34,12 @@ android:
     # Additional components
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-26
+    #- addon-google_apis-google-26
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
-    - sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API_LEVEL
+    #- sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
+    #- sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API_LEVEL
     - sys-img-armeabi-v7a-google_apis-$EMULATOR_API_LEVEL
 
   licenses:
@@ -55,7 +55,7 @@ before_install:
   - ./gradlew dependencies || true
   
 before_script:
-  - echo no | android create avd --force -n test -t android-$EMULATOR_API --abi armeabi-v7a --tag $ANDROID_TAG
+  - echo no | android create avd --force -n test -t "android-"$EMULATOR_API --abi armeabi-v7a --tag $ANDROID_TAG
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
