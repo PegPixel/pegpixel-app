@@ -11,12 +11,12 @@ import org.md.pegpixel.pegboard.Pegboard
 import org.md.pegpixel.persistence.BoardPersistence
 import kotlin.concurrent.thread
 
-class BoardEvents(private val allPegsWithButtons: List<PegView>){
+class BoardEvents(private val allPegViews: List<PegView>){
 
     fun setupSendAllButton(sendAllButton: Button, sendViaBt: (Peg) -> Unit) {
         sendAllButton.setOnClickListener {
             thread {
-                allPegsWithButtons.forEach { pegView ->
+                allPegViews.forEach { pegView ->
                     sendViaBt(pegView.peg)
                     // receiving side cannot handle the speed of the transmission -> throttle
                     Thread.sleep(50)
@@ -26,19 +26,16 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
     }
 
 
-    fun setupPegEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit): List<Peg> {
-        allPegsWithButtons.forEach { pegViewWithCheckbox ->
-            pegViewWithCheckbox.updateColor(pegViewWithCheckbox.peg.color)
-
-            pegViewWithCheckbox.button.setOnClickListener {
-                pegViewWithCheckbox.peg.toggleSelect()
-                sendViaBt(pegViewWithCheckbox.peg)
+    fun setupPegEventListeners(fragmentManager: FragmentManager, sendViaBt: (Peg) -> Unit) {
+        allPegViews.forEach { pegView ->
+            pegView.button.setOnClickListener {
+                pegView.peg.toggleSelect()
+                sendViaBt(pegView.peg)
             }
-            pegViewWithCheckbox.button.setOnLongClickListener {
-                showColorPicker(pegViewWithCheckbox, fragmentManager)
+            pegView.button.setOnLongClickListener {
+                showColorPicker(pegView, fragmentManager)
             }
         }
-        return allPegsWithButtons.map { it.peg }
     }
 
     private fun showColorPicker(pegWithCheckbox: PegView, fragmentManager: FragmentManager): Boolean {
@@ -50,24 +47,11 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
         return true
     }
 
-    fun handleSelectedColor(pegViewId: Int, selectedColor: Int, sendViaBt: (Peg) -> Unit) {
-        allPegsWithButtons
-            .filter { !it.button.isChecked }
-            .forEach { it.updateColor(selectedColor) }
-
-        allPegsWithButtons.find {
-            it.button.id == pegViewId
-        }?.let {
-            it.selectWithColor(selectedColor)
-            sendViaBt(it.peg)
-        }
-    }
-
     fun setupSaveButton(saveButton: Button,
                         boardName: EditText,
                         boardPersistence: BoardPersistence) {
         saveButton.setOnClickListener{ _ ->
-            val pegboard = Pegboard(boardName.text.toString(), allPegsWithButtons.map { it.peg })
+            val pegboard = Pegboard(boardName.text.toString(), allPegViews.map { it.peg })
             boardPersistence.save(pegboard)
         }
     }
@@ -89,7 +73,7 @@ class BoardEvents(private val allPegsWithButtons: List<PegView>){
     }
 
     private fun findMatching(loadedPeg: Peg): PegView? {
-        return allPegsWithButtons.find {
+        return allPegViews.find {
             it.peg.columnIndex == loadedPeg.columnIndex &&
             it.peg.rowIndex    == loadedPeg.rowIndex
         }

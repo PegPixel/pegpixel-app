@@ -3,14 +3,15 @@ package org.md.pegpixel
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import org.md.pegpixel.ui.BluetoothConnectionStatus
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import org.md.pegpixel.pegboard.Peg
-import org.md.pegpixel.pegboard.Pegboard
 import org.md.pegpixel.persistence.BoardPersistence
 import org.md.pegpixel.serialized.PegGridToJson
 import org.md.pegpixel.ui.BoardEvents
 import org.md.pegpixel.ui.PegViewInitializer
+import org.md.pegpixel.ui.PegboardView
 import kotlin.concurrent.thread
 
 
@@ -20,9 +21,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoardManager? = null
 
-    private var boardEvents: BoardEvents? = null
-
-    private var pegboard: Pegboard? = null
+    private var pegboardView: PegboardView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,29 +33,27 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
         val boardPersistence = BoardPersistence(applicationContext)
 
-        val allPegs = createPegs(7,
-                5,
-                Color.RED)
+        val allPegs = createPegs(7, 5, Color.RED)
 
         val allPegViews = PegViewInitializer.addToTable(allPegs, findViewById(R.id.pegTableLayout))
-
 
         val boardEvents = BoardEvents(allPegViews)
 
         boardEvents.setupPegEventListeners(fragmentManager, this::sendViaBt)
         boardEvents.setupSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
-        
+
+        val boardNameEditText = findViewById<EditText>(R.id.boardName)
         boardEvents.setupSaveButton(
                 findViewById(R.id.saveButton),
-                findViewById(R.id.boardName),
+                boardNameEditText,
                 boardPersistence)
 
         boardEvents.setupLoadButton(
                 findViewById(R.id.loadButton),
-                findViewById(R.id.boardName),
+                boardNameEditText,
                 boardPersistence)
 
-        this.boardEvents = boardEvents
+        this.pegboardView = PegboardView(allPegViews)
         this.bluetoothConnectionToBoard = bluetoothConnectionToBoard
     }
 
@@ -69,7 +66,13 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
     }
 
     override fun handleSelectedColor(pegViewId: Int, selectedColor: Int) {
-        boardEvents?.handleSelectedColor(pegViewId, selectedColor, this::sendViaBt)
+        pegboardView?.updateColorForNonSelectedPegs(selectedColor)
+        val pegView = pegboardView?.findById(pegViewId)
+
+        pegView?.let {
+            it.selectWithColor(selectedColor)
+            sendViaBt(it.peg)
+        }
     }
 
     override fun onDestroy() {
