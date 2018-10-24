@@ -10,7 +10,7 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "org.md.pegpixel"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
