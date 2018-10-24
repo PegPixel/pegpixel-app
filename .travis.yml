@@ -27,7 +27,7 @@ android:
   - android-$EMULATOR_API_LEVEL
   - extra-google-m2repository
   - extra-android-m2repository # for design library
-  - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
+  - sys-img-x86_64-android-$EMULATOR_API_LEVEL
 
 before_install:
 - chmod +x gradlew
