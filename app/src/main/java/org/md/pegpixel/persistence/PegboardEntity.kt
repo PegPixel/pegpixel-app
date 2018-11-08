@@ -6,7 +6,7 @@ import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
 
 @Entity
-data class PersistedPegboard(
+data class PegboardEntity(
     @PrimaryKey
     val name: String,
     val pegs: List<PersistedPeg>
@@ -25,8 +25,8 @@ data class PersistedPeg(
 
 class PersistedPegboardConverter {
     companion object {
-        fun createFrom(pegboard: Pegboard): PersistedPegboard {
-            return PersistedPegboard(
+        fun createFrom(pegboard: Pegboard): PegboardEntity {
+            return PegboardEntity(
                     name = pegboard.name,
                     pegs = pegboard.pegs.map {
                         PersistedPeg(
@@ -38,10 +38,10 @@ class PersistedPegboardConverter {
                     }
             )
         }
-        fun createFrom(pegboard: PersistedPegboard): Pegboard {
+        fun createFrom(pegboardEntity: PegboardEntity): Pegboard {
             return Pegboard(
-                    name = pegboard.name,
-                    pegs = pegboard.pegs.map {
+                    name = pegboardEntity.name,
+                    pegs = pegboardEntity.pegs.map {
                         Peg(
                                 columnIndex = it.columnIndex,
                                 rowIndex = it.rowIndex,

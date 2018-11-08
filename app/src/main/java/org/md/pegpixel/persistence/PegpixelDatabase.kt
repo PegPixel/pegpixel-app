@@ -7,7 +7,7 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 
 
-@Database(entities = [PersistedPegboard::class], version = 1, exportSchema = false)
+@Database(entities = [PegboardEntity::class], version = 1, exportSchema = false)
 @TypeConverters(RoomConverters::class)
 abstract class PegpixelDatabase : RoomDatabase() {
     abstract fun pegboardDao(): PegboardDao
