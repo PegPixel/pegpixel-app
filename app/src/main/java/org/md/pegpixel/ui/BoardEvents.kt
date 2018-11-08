@@ -8,7 +8,7 @@ import android.widget.TextView
 import org.md.pegpixel.PickColorFragment
 import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
-import org.md.pegpixel.persistence.BoardPersistence
+import org.md.pegpixel.persistence.BoardRepository
 import kotlin.concurrent.thread
 
 class BoardEvents(private val allPegViews: List<PegView>){
@@ -49,20 +49,20 @@ class BoardEvents(private val allPegViews: List<PegView>){
 
     fun setupSaveButton(saveButton: Button,
                         boardName: EditText,
-                        boardPersistence: BoardPersistence) {
+                        boardRepository: BoardRepository) {
         saveButton.setOnClickListener{ _ ->
             val pegboard = Pegboard(boardName.text.toString(), allPegViews.map { it.peg })
-            boardPersistence.save(pegboard)
+            boardRepository.save(pegboard)
         }
     }
 
 
     fun setupLoadButton(loadButton: Button,
                         boardName: EditText,
-                        boardPersistence: BoardPersistence) {
+                        boardRepository: BoardRepository) {
         loadButton.setOnClickListener{ _ ->
             val name = boardName.text.toString()
-            boardPersistence.load(name).thenAccept { pegboard ->
+            boardRepository.load(name).thenAccept { pegboard ->
                 pegboard?.pegs?.forEach { loadedPeg ->
                     val findMatching = findMatching(loadedPeg)
                     findMatching?.update(loadedPeg.selected, loadedPeg.color)

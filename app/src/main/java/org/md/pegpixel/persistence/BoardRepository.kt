@@ -5,7 +5,7 @@ import android.content.Context
 import java.util.concurrent.CompletableFuture
 
 
-class BoardPersistence(context: Context){
+class BoardRepository(context: Context){
     private val instance = PegpixelDatabase.getInstance(context)
 
     fun save(pegboard: Pegboard) {

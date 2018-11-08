@@ -7,7 +7,7 @@ import android.widget.EditText
 import org.md.pegpixel.ui.BluetoothConnectionStatus
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import org.md.pegpixel.pegboard.Peg
-import org.md.pegpixel.persistence.BoardPersistence
+import org.md.pegpixel.persistence.BoardRepository
 import org.md.pegpixel.serialized.PegGridToJson
 import org.md.pegpixel.ui.BoardEvents
 import org.md.pegpixel.ui.PegViewInitializer
@@ -31,7 +31,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         val bluetoothConnectionToBoard = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
         bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
 
-        val boardPersistence = BoardPersistence(applicationContext)
+        val boardPersistence = BoardRepository(applicationContext)
 
         val allPegs = createPegs(7, 5, Color.RED)
 
