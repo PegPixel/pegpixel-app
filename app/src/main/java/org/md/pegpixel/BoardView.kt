@@ -17,7 +17,7 @@ import kotlin.concurrent.thread
 
 class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
-    private val bluetoothDeviceName = "DSD TECH HC-05"
+    private val bluetoothDeviceName = "pegpixel-board"
 
     private var bluetoothConnectionToBoard: BluetoothConnectionToBoardManager? = null
 
