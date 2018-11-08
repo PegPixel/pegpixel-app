@@ -1,23 +1,19 @@
 language: android
 sudo: required
 jdk: oraclejdk8
-
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 env:
   global:
   - ANDROID_API=25
   - EMULATOR_API=24
   - ANDROID_BUILD_TOOLS=25.0.2
-  - ADB_INSTALL_TIMEOUT=5 # minutes
-
+  - ADB_INSTALL_TIMEOUT=5
 android:
   components:
   - tools
@@ -26,22 +22,22 @@ android:
   - android-$ANDROID_API
   - android-$EMULATOR_API_LEVEL
   - extra-google-m2repository
-  - extra-android-m2repository # for design library
+  - extra-android-m2repository
   - sys-img-x86_64-android-$EMULATOR_API_LEVEL
-
 before_install:
 - chmod +x gradlew
 - echo y | android update sdk --no-ui --all --filter "tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository"
 - echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-
 before_script:
 - echo "y" | android update sdk -a --no-ui --filter android-24
 - echo "y" | android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-24
-- android list targets | grep -E '^id:' | awk -F '"' '{$1=""; print $2}' # list all targets
+- android list targets | grep -E '^id:' | awk -F '"' '{$1=""; print $2}'
 - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
 - emulator -avd test -no-skin -no-window &
 - android-wait-for-emulator
 - adb shell input keyevent 82 &
-
 script:
 - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+notifications:
+  slack:
+    secure: tbRnzASSOA9iUIHo0FjEs2Q+Qy3uyzE0VerTXyc8Dw/UCBjetnlw4jOUaT9xvdk6uIue6Rv/ReKirvEW+0zgb39YMxkYc87BAjLroHwo63G2uT+DoPEqKozTOK04pSQ6ZscHFRCoQ0Mxg3VkmZ/yMfgKXJIQq8njeIjMkQxZspHRGstGK/PGFf0FWGzQSmGFrB5guwXzbyO8b2cn6zG/Y7UlBw3MhDrjcdO/fm49Ahx1vV15B/lw2+Pctcz6pR51ezv3/z3ekXx0QPDq7OP9XEcJwKp46Z/Xypb+tZ+ESysVCd210LZxfIR2jbNJi/zVXssmZDXVS8IX/bnYAYWXyu8ByrpyGgOp9ih/+zc1lsWFuPv7SFd8TJjHvP21++OyReH3t4qHv7+MByjHJbjvJ3ZmH6xi3/O3iZ3EDaZaLyi3DspvO99XcNzveFV8idjpvJjvyAywBvEjp1NN2ndhHs093WWeDDfwmO5yrSQMZWds5XeUdTrv6QbPXmqsNqYT+c2tO+955SX/lPvWZU2EVDReFSE29KF+6/rVNLJlak3PeY1wqozQ6686BTP8u0jcz7Ib3XktGvRklVjUyZUzlmSB8ff82fLxfq/yW3OCD9/HgtehTrRa+nl9lfSsCccuJ+k/EitOJhYYb4r3ub0+YKuKZuiVT24LkAGPKSmhhuw=
