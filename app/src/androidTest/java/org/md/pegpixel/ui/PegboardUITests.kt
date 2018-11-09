@@ -17,13 +17,13 @@ import org.md.pegpixel.R
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class SaveAndLoadPegboardTest {
+class PegboardUITests {
 
     @get:Rule
     var activityRule: ActivityTestRule<BoardView> = ActivityTestRule(BoardView::class.java)
 
     @Test
-    fun changeText_sameActivity() {
+    fun saveAndLoadPegboard() {
         val pegboardViewObject = PegboardViewObject()
         pegboardViewObject.clickFirstPeg()
         pegboardViewObject.setBoardName()
