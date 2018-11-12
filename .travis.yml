@@ -40,5 +40,4 @@ script:
 - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
 notifications:
   slack:
-    on_success: change
     secure: tbRnzASSOA9iUIHo0FjEs2Q+Qy3uyzE0VerTXyc8Dw/UCBjetnlw4jOUaT9xvdk6uIue6Rv/ReKirvEW+0zgb39YMxkYc87BAjLroHwo63G2uT+DoPEqKozTOK04pSQ6ZscHFRCoQ0Mxg3VkmZ/yMfgKXJIQq8njeIjMkQxZspHRGstGK/PGFf0FWGzQSmGFrB5guwXzbyO8b2cn6zG/Y7UlBw3MhDrjcdO/fm49Ahx1vV15B/lw2+Pctcz6pR51ezv3/z3ekXx0QPDq7OP9XEcJwKp46Z/Xypb+tZ+ESysVCd210LZxfIR2jbNJi/zVXssmZDXVS8IX/bnYAYWXyu8ByrpyGgOp9ih/+zc1lsWFuPv7SFd8TJjHvP21++OyReH3t4qHv7+MByjHJbjvJ3ZmH6xi3/O3iZ3EDaZaLyi3DspvO99XcNzveFV8idjpvJjvyAywBvEjp1NN2ndhHs093WWeDDfwmO5yrSQMZWds5XeUdTrv6QbPXmqsNqYT+c2tO+955SX/lPvWZU2EVDReFSE29KF+6/rVNLJlak3PeY1wqozQ6686BTP8u0jcz7Ib3XktGvRklVjUyZUzlmSB8ff82fLxfq/yW3OCD9/HgtehTrRa+nl9lfSsCccuJ+k/EitOJhYYb4r3ub0+YKuKZuiVT24LkAGPKSmhhuw=
