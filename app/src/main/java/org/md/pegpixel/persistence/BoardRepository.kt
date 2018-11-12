@@ -1,21 +1,20 @@
 package org.md.pegpixel.persistence
 
-import org.md.pegpixel.pegboard.*
 import android.content.Context
-import java.util.concurrent.CompletableFuture
-
+import kotlinx.coroutines.*
+import org.md.pegpixel.pegboard.Pegboard
 
 class BoardRepository(context: Context){
     private val instance = PegpixelDatabase.getInstance(context)
 
     fun save(pegboard: Pegboard) {
-        CompletableFuture.runAsync {
-            instance.pegboardDao().insert(PersistedPegboardConverter.createFrom(pegboard))
+        GlobalScope.launch(Dispatchers.IO) {
+                instance.pegboardDao().insert(PersistedPegboardConverter.createFrom(pegboard))
+            }
         }
-    }
 
-    fun load(name: String): CompletableFuture<Pegboard?> {
-        return CompletableFuture.supplyAsync {
+    fun load(name: String): Deferred<Pegboard?> {
+        return GlobalScope.async(Dispatchers.IO) {
             val persistedPegboard = instance.pegboardDao().loadByName(name)
             PersistedPegboardConverter.createFrom(persistedPegboard)
         }

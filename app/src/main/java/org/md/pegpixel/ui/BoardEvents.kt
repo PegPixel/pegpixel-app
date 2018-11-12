@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.md.pegpixel.PickColorFragment
 import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.pegboard.Pegboard
@@ -60,9 +63,10 @@ class BoardEvents(private val allPegViews: List<PegView>){
     fun setupLoadButton(loadButton: Button,
                         boardName: EditText,
                         boardRepository: BoardRepository) {
-        loadButton.setOnClickListener{ _ ->
-            val name = boardName.text.toString()
-            boardRepository.load(name).thenAccept { pegboard ->
+        loadButton.setOnClickListener { _ ->
+            GlobalScope.launch(Dispatchers.Main) {
+                val name = boardName.text.toString()
+                val pegboard = boardRepository.load(name).await()
                 pegboard?.pegs?.forEach { loadedPeg ->
                     val findMatching = findMatching(loadedPeg)
                     findMatching?.update(loadedPeg.selected, loadedPeg.color)

@@ -1,14 +1,17 @@
 package org.md.pegpixel
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
-import org.md.pegpixel.ui.BluetoothConnectionStatus
+import android.widget.TableLayout
 import org.md.pegpixel.bluetooth.BluetoothConnectionToBoardManager
 import org.md.pegpixel.pegboard.Peg
 import org.md.pegpixel.persistence.BoardRepository
 import org.md.pegpixel.serialized.PegGridToJson
+import org.md.pegpixel.ui.BluetoothConnectionStatus
 import org.md.pegpixel.ui.BoardEvents
 import org.md.pegpixel.ui.PegViewInitializer
 import org.md.pegpixel.ui.PegboardView
@@ -27,7 +30,7 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_view)
 
-        val bluetoothConnectionStatus = BluetoothConnectionStatus(findViewById(R.id.connectionStatus), applicationContext)
+        val bluetoothConnectionStatus = BluetoothConnectionStatus(findViewById(R.id.connectionStatus) as CheckBox, applicationContext)
         val bluetoothConnectionToBoard = BluetoothConnectionToBoardManager(bluetoothDeviceName, bluetoothConnectionStatus)
         bluetoothConnectionToBoard.attemptConnection(bluetoothDeviceName)
 
@@ -35,21 +38,21 @@ class BoardView : AppCompatActivity(), PickColorFragment.SelectedColorListener {
 
         val allPegs = createPegs(7, 5, Color.RED)
 
-        val allPegViews = PegViewInitializer.addToTable(allPegs, findViewById(R.id.pegTableLayout))
+        val allPegViews = PegViewInitializer.addToTable(allPegs, findViewById(R.id.pegTableLayout) as TableLayout)
 
         val boardEvents = BoardEvents(allPegViews)
 
         boardEvents.setupPegEventListeners(fragmentManager, this::sendViaBt)
-        boardEvents.setupSendAllButton(findViewById(R.id.sendAllButton), this::sendViaBt)
+        boardEvents.setupSendAllButton(findViewById(R.id.sendAllButton) as Button, this::sendViaBt)
 
-        val boardNameEditText = findViewById<EditText>(R.id.boardName)
+        val boardNameEditText = findViewById(R.id.boardName)
         boardEvents.setupSaveButton(
-                findViewById(R.id.saveButton),
-                boardNameEditText,
+                findViewById(R.id.saveButton) as Button,
+                boardNameEditText as EditText,
                 boardPersistence)
 
         boardEvents.setupLoadButton(
-                findViewById(R.id.loadButton),
+                findViewById(R.id.loadButton) as Button,
                 boardNameEditText,
                 boardPersistence)
 
