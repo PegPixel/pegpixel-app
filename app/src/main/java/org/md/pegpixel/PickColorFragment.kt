@@ -25,7 +25,7 @@ class PickColorFragment : DialogFragment() {
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val inflate = inflater.inflate(R.layout.color_picker, container, false)
-        val colorPicker: ColorPickerView = inflate.findViewById(R.id.colorPicker)
+        val colorPicker: ColorPickerView = inflate.findViewById(R.id.colorPicker) as ColorPickerView
 
         colorPicker.addOnColorSelectedListener{selectedColor ->
             val pegViewId = arguments.getInt("pegViewId")
